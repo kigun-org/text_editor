@@ -1,0 +1,26 @@
+{
+  "name": "text-editor",
+  "private": true,
+  "version": "1.0.0",
+  "description": "BlockNote text editor. Built files are written to dist/ and copied to ../portfolio/cases/static/js/text_editor/",
+  "type": "module",
+  "packageManager": "pnpm@12.4.1",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node build.mjs --watch"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.25.5"
+  },
+  "dependencies": {
+    "@blocknote/core": "^0.54.2",
+    "@blocknote/mantine": "^0.54.2",
+    "@blocknote/react": "^0.54.2",
+    "@mantine/core": "^9.6.1",
+    "@mantine/hooks": "^9.6.1",
+    "@mantine/utils": "^6.0.22",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  }
+}

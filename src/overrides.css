@@ -1,0 +1,45 @@
+[data-blocknote] {
+  min-width: 0;
+  width: 100%;
+}
+
+[data-blocknote]:not([data-blocknote-readonly]) {
+  box-sizing: border-box;
+  border: 2px solid var(--tblr-border-color, #d9dbde);
+  border-radius: var(--tblr-border-radius, 0.5rem);
+}
+
+[data-blocknote].border-warning {
+  border-color: var(--tblr-warning, #f59f00) !important;
+}
+
+[data-blocknote].border-danger {
+  border-color: var(--tblr-danger, #d63939) !important;
+}
+
+[data-blocknote].border-success {
+  border-color: var(--tblr-success, #2fb344) !important;
+}
+
+[data-blocknote] .bn-container,
+[data-blocknote] .bn-editor {
+  width: 100%;
+  background: transparent;
+}
+
+[data-blocknote-readonly] .bn-editor {
+  padding-inline: 0;
+}
+
+[data-blocknote] textarea,
+[data-blocknote] input[name] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
