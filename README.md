@@ -10,6 +10,7 @@ The editor includes a custom tooth-chart block and optional Yjs collaboration
 pnpm install
 pnpm dev    # http://localhost:5173/ and /dental.html
 pnpm build  # dist/text-editor.js + dist/text-editor.css
+pnpm test   # Playwright against the Vite demo
 ```
 
 Open the same room in another tab to collaborate locally.
