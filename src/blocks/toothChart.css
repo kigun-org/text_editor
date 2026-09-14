@@ -1,0 +1,66 @@
+.tooth-chart {
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  max-width: 100%;
+  padding: 0;
+  user-select: none;
+}
+
+.tooth-chart__quadrant {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0;
+}
+
+/* Cross between quadrants */
+.tooth-chart__quadrant:nth-child(1),
+.tooth-chart__quadrant:nth-child(2) {
+  border-bottom: 1px solid #98a2b3;
+}
+
+.tooth-chart__quadrant:nth-child(1),
+.tooth-chart__quadrant:nth-child(3) {
+  border-right: 1px solid #98a2b3;
+}
+
+.tooth-chart__cell {
+  width: 1.35rem;
+  height: 1.35rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 3px;
+  background: transparent;
+  color: #667085;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1;
+  transition:
+    background-color 120ms ease,
+    color 120ms ease;
+}
+
+.tooth-chart__cell:hover:not(.tooth-chart__cell--warning):not(
+    .tooth-chart__cell--danger
+  ) {
+  background: #e5e7eb;
+  color: #111;
+}
+
+.tooth-chart__cell--warning {
+  background: #fcd34d;
+  color: #111;
+}
+
+.tooth-chart__cell--danger {
+  background: #fca5a5;
+  color: #111;
+}
+
+.tooth-chart__cell--missing {
+  color: #98a2b3;
+}

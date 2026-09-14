@@ -5,57 +5,80 @@ import { fileURLToPath } from 'node:url';
 
 const watch = process.argv.includes('--watch');
 const root = dirname(fileURLToPath(import.meta.url));
-const outfile = resolve(root, 'dist/text-editor.js');
-const portfolioDest = resolve(
-  root,
-  '../portfolio/cases/static/js/text_editor',
-);
+const dist = resolve(root, 'dist');
 
-function copyToPortfolio() {
-  if (!existsSync(resolve(root, '../portfolio'))) {
-    console.warn('Sibling portfolio/ not found; skipping copy.');
-    return;
-  }
-  mkdirSync(portfolioDest, { recursive: true });
-  for (const name of ['text-editor.js', 'text-editor.css']) {
-    cpSync(resolve(root, 'dist', name), resolve(portfolioDest, name));
-  }
-  console.info(`copied dist/text-editor.{js,css} → ${portfolioDest}`);
+function copyPublic() {
+  const publicDir = resolve(root, 'public');
+  if (!existsSync(publicDir)) return;
+  mkdirSync(dist, { recursive: true });
+  cpSync(publicDir, dist, { recursive: true });
 }
 
-const options = {
-  entryPoints: [resolve(root, 'src/text-editor.jsx')],
+const shared = {
   bundle: true,
   minify: !watch,
-  sourcemap: false,
+  sourcemap: watch,
   format: 'esm',
   target: 'es2022',
-  outfile,
   jsx: 'automatic',
   conditions: ['style'],
+  logLevel: 'info',
+  define: {
+    'process.env.NODE_ENV': watch ? '"development"' : '"production"',
+  },
+};
+
+const widgetOptions = {
+  ...shared,
+  entryPoints: [resolve(root, 'src/text-editor.jsx')],
+  outfile: resolve(dist, 'text-editor.js'),
   loader: {
     '.woff': 'dataurl',
     '.woff2': 'dataurl',
   },
-  logLevel: 'info',
+};
+
+const demoOptions = {
+  ...shared,
+  entryPoints: [
+    resolve(root, 'src/demo/main.tsx'),
+    resolve(root, 'src/demo/dental.tsx'),
+  ],
+  outdir: dist,
+  loader: {
+    '.woff': 'file',
+    '.woff2': 'file',
+  },
   plugins: [
     {
-      name: 'copy-to-portfolio',
+      name: 'copy-public',
       setup(buildApi) {
         buildApi.onEnd((result) => {
           if (result.errors.length) return;
-          copyToPortfolio();
+          copyPublic();
         });
       },
     },
   ],
 };
 
-mkdirSync(dirname(outfile), { recursive: true });
+mkdirSync(dist, { recursive: true });
+copyPublic();
 
 if (watch) {
-  const ctx = await context(options);
-  await ctx.watch();
+  const widgetCtx = await context(widgetOptions);
+  const demoCtx = await context(demoOptions);
+  await Promise.all([widgetCtx.watch(), demoCtx.watch()]);
+  const { hosts, port } = await demoCtx.serve({
+    servedir: dist,
+    port: 3000,
+  });
+  for (const host of hosts) {
+    console.log(`Dev server at http://${host}:${port}`);
+  }
+  console.log(`Dev server at http://localhost:${port}`);
+  console.log(`Dental demo → http://localhost:${port}/dental.html`);
 } else {
-  await build(options);
+  await build(widgetOptions);
+  await build(demoOptions);
 }

@@ -1,0 +1,25 @@
+[
+  {
+    "id": "basic-heading",
+    "type": "heading",
+    "props": { "level": 1 },
+    "content": "Patient note"
+  },
+  {
+    "id": "basic-intro",
+    "type": "paragraph",
+    "content": "Short example: amber = finding, red = danger. Click teeth to cycle states."
+  },
+  {
+    "id": "basic-teeth",
+    "type": "toothChart",
+    "props": {
+      "teeth": "00100000000000000000000000000200"
+    }
+  },
+  {
+    "id": "basic-notes",
+    "type": "paragraph",
+    "content": "Tooth 16: watch. Tooth 36: treat."
+  }
+]
