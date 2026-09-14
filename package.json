@@ -5,13 +5,18 @@
   "description": "BlockNote text editor. Built files are written to dist/.",
   "type": "module",
   "packageManager": "pnpm@12.4.1",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
-    "build": "node build.mjs",
-    "dev": "node build.mjs --watch"
+    "dev": "vite",
+    "build": "vite build -c vite.lib.config.ts",
+    "preview": "vite preview"
   },
   "license": "MIT",
   "devDependencies": {
-    "esbuild": "^0.25.5"
+    "@vitejs/plugin-react": "^5.0.4",
+    "vite": "8.0.16"
   },
   "dependencies": {
     "@blocknote/core": "^0.54.2",
