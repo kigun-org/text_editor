@@ -2,7 +2,7 @@
   "name": "text-editor",
   "private": true,
   "version": "1.0.0",
-  "description": "BlockNote text editor. Built files are written to dist/ and copied to ../portfolio/cases/static/js/text_editor/",
+  "description": "BlockNote text editor. Built files are written to dist/.",
   "type": "module",
   "packageManager": "pnpm@12.4.1",
   "scripts": {

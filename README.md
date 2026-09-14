@@ -10,12 +10,7 @@ pnpm install
 pnpm build
 ```
 
-This writes `dist/text-editor.js` and `dist/text-editor.css`. When a sibling
-`portfolio/` checkout is present, those files are also copied to:
-
-```
-../portfolio/cases/static/js/text_editor/
-```
+This writes `dist/text-editor.js` and `dist/text-editor.css`.
 
 Watch mode:
 
