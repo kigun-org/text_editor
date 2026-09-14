@@ -1,0 +1,2194 @@
+[
+  {
+    "id": "odtp-title",
+    "type": "heading",
+    "props": {
+      "level": 1
+    },
+    "content": "Oral Diagnosis and Treatment Plan",
+    "children": [
+      {
+        "id": "odtp-patient",
+        "type": "paragraph",
+        "content": "Patient: ____________    Age/sex: ____________    Date: ____________"
+      },
+      {
+        "id": "h-027",
+        "type": "heading",
+        "props": {
+          "level": 1
+        },
+        "content": "Patient Complaints",
+        "children": [
+          {
+            "id": "tbl-028",
+            "type": "table",
+            "content": {
+              "type": "tableContent",
+              "columnWidths": [
+                220,
+                220,
+                220
+              ],
+              "rows": [
+                {
+                  "cells": [
+                    "",
+                    "CHIEF COMPLAINT/CONCERN",
+                    "HISTORY OF PRESENT COMPLAINT/CONCERN"
+                  ]
+                },
+                {
+                  "cells": [
+                    "1.",
+                    "C/O (verbatim, use layman terms)\n\nNotes: may require clarification. A denture that 'does not fit' may be loose, oversized, or have very worn artificial teeth. (MOVE TO GUIDE)",
+                    "● Site of Chief Complaint:\n\n● Pain started:\n\n● Pain occurs when:\n\n• Spontaneous/ Non-spontaneous\n• Eating (Bite/ Chew) / Drinking/ Brushing/ Sleeping/ Cold/ Hot\n\n● Nature of pain: Sharp/ Throbbing/ ___________ pain, around ____ seconds\n\n● Scale: ___ out of 10\n\n● Amelioration:\n\n● Sleep disturbance:"
+                  ]
+                }
+              ],
+              "headerRows": 1
+            }
+          },
+          {
+            "id": "p-029",
+            "type": "paragraph",
+            "content": "Patient's expectations / desires:"
+          },
+          {
+            "id": "p-030",
+            "type": "paragraph",
+            "content": "Stating what the patient wants out of treatment."
+          }
+        ]
+      },
+      {
+        "id": "h-031",
+        "type": "heading",
+        "props": {
+          "level": 1
+        },
+        "content": "Relevant Medical History",
+        "children": [
+          {
+            "id": "p-032",
+            "type": "paragraph",
+            "content": "Clear medical history."
+          },
+          {
+            "id": "p-033",
+            "type": "paragraph",
+            "content": "OR"
+          },
+          {
+            "id": "tbl-034",
+            "type": "table",
+            "content": {
+              "type": "tableContent",
+              "columnWidths": [
+                175,
+                175,
+                175,
+                175
+              ],
+              "rows": [
+                {
+                  "cells": [
+                    "",
+                    "CONDITION",
+                    "MANAGEMENT",
+                    "MEDICATION"
+                  ]
+                },
+                {
+                  "cells": [
+                    "1.",
+                    "Indicate what medical conditions patient might have.",
+                    "Frequency of review appointments for medical conditions?\n\nEg. Suffers from diabetes mellitus.\n\nThe duration since the diagnosis of the diabetes mellitus:\n\nThe methods of diabetic control:\n\nThe levels of diabetic control achieved\n\nThe diabetic complications encountered:",
+                    "Name (active ingredient), dose, posology (20mg, tablets, t.d.s., until ../….)"
+                  ]
+                }
+              ],
+              "headerRows": 1
+            }
+          },
+          {
+            "id": "p-035",
+            "type": "paragraph",
+            "content": "Vital signs / medical risk check (usually checked before giving local anaesthetic or doing anything invasive):",
+            "children": [
+              {
+                "id": "ul-036",
+                "type": "bulletListItem",
+                "content": "Blood pressure"
+              },
+              {
+                "id": "ul-037",
+                "type": "bulletListItem",
+                "content": "ASA classification"
+              },
+              {
+                "id": "ul-038",
+                "type": "bulletListItem",
+                "content": "Pregnancy status"
+              }
+            ]
+          },
+          {
+            "id": "p-039",
+            "type": "paragraph",
+            "content": "Bleeding risk / bone medication check",
+            "children": [
+              {
+                "id": "ul-040",
+                "type": "bulletListItem",
+                "content": "Anticoagulant / Antiplatelet medication"
+              },
+              {
+                "id": "ul-041",
+                "type": "bulletListItem",
+                "content": "antiresorptive medication (e.g, bisphosphonate-type drugs)"
+              }
+            ]
+          },
+          {
+            "id": "p-042",
+            "type": "paragraph",
+            "content": "Jaw injury / radiotherapy history",
+            "children": [
+              {
+                "id": "ul-043",
+                "type": "bulletListItem",
+                "content": "previous jaw fractures or trauma"
+              },
+              {
+                "id": "ul-044",
+                "type": "bulletListItem",
+                "content": "prior radiotherapy to the head and neck"
+              }
+            ]
+          },
+          {
+            "id": "p-045",
+            "type": "paragraph",
+            "content": "Allergies"
+          },
+          {
+            "id": "p-046",
+            "type": "paragraph",
+            "content": "No known drug allergies (NKDA)."
+          },
+          {
+            "id": "p-047",
+            "type": "paragraph",
+            "content": "Any abnormal responses or complications"
+          },
+          {
+            "id": "p-048",
+            "type": "paragraph",
+            "content": "OR"
+          },
+          {
+            "id": "p-049",
+            "type": "paragraph",
+            "content": "Known drug allergy to ... (discovered ..., last episode ....)"
+          },
+          {
+            "id": "h-050",
+            "type": "heading",
+            "props": {
+              "level": 2
+            },
+            "content": "Dental History",
+            "children": [
+              {
+                "id": "p-051",
+                "type": "paragraph",
+                "content": "Visit to dentist"
+              },
+              {
+                "id": "p-052",
+                "type": "paragraph",
+                "content": "Last dentist visit",
+                "children": [
+                  {
+                    "id": "ul-053",
+                    "type": "bulletListItem",
+                    "content": "Regular/ irregular attendee"
+                  },
+                  {
+                    "id": "ul-054",
+                    "type": "bulletListItem",
+                    "content": "Symptom driven/ non-symptom driven"
+                  }
+                ]
+              },
+              {
+                "id": "p-055",
+                "type": "paragraph",
+                "content": "Previous major treatments",
+                "children": [
+                  {
+                    "id": "ul-056",
+                    "type": "bulletListItem",
+                    "content": "Treatments:"
+                  },
+                  {
+                    "id": "ul-057",
+                    "type": "bulletListItem",
+                    "content": "Reason for treatments:"
+                  },
+                  {
+                    "id": "ul-058",
+                    "type": "bulletListItem",
+                    "content": "Where:"
+                  }
+                ]
+              },
+              {
+                "id": "p-059",
+                "type": "paragraph",
+                "content": "Any dental splinting and why:"
+              },
+              {
+                "id": "p-060",
+                "type": "paragraph",
+                "content": "Any forms of aesthetic dentistry on anterior teeth:"
+              },
+              {
+                "id": "p-061",
+                "type": "paragraph",
+                "content": "Dental anxiety"
+              },
+              {
+                "id": "p-062",
+                "type": "paragraph",
+                "content": "no simple anxiety/phobia screening in the dental history."
+              }
+            ]
+          },
+          {
+            "id": "h-063",
+            "type": "heading",
+            "props": {
+              "level": 2
+            },
+            "content": "Relevant Social and Family History",
+            "children": [
+              {
+                "id": "ul-064",
+                "type": "bulletListItem",
+                "content": "Ethnicity"
+              },
+              {
+                "id": "ul-065",
+                "type": "bulletListItem",
+                "content": "Education level: ... degree"
+              },
+              {
+                "id": "ul-066",
+                "type": "bulletListItem",
+                "content": "Marital status: ..."
+              },
+              {
+                "id": "p-067",
+                "type": "paragraph",
+                "content": "● Known hereditary disease or congenital disease:"
+              },
+              {
+                "id": "p-068",
+                "type": "paragraph",
+                "content": "● Living with ______________________"
+              },
+              {
+                "id": "p-069",
+                "type": "paragraph",
+                "content": "● Family’s dental history",
+                "children": [
+                  {
+                    "id": "ul-070",
+                    "type": "bulletListItem",
+                    "content": "Father:"
+                  },
+                  {
+                    "id": "ul-071",
+                    "type": "bulletListItem",
+                    "content": "Mother:"
+                  }
+                ]
+              },
+              {
+                "id": "p-072",
+                "type": "paragraph",
+                "content": "● Family’s medical history",
+                "children": [
+                  {
+                    "id": "ul-073",
+                    "type": "bulletListItem",
+                    "content": "Father:"
+                  },
+                  {
+                    "id": "ul-074",
+                    "type": "bulletListItem",
+                    "content": "Mother"
+                  }
+                ]
+              },
+              {
+                "id": "p-075",
+                "type": "paragraph",
+                "content": "Any family history of periodontal disease, tooth loss due to periodontal disease:"
+              },
+              {
+                "id": "p-076",
+                "type": "paragraph",
+                "content": "Any early tooth loss in parents and siblings:"
+              }
+            ]
+          },
+          {
+            "id": "h-077",
+            "type": "heading",
+            "props": {
+              "level": 2
+            },
+            "content": "Oral Hygiene and Diet Habits",
+            "children": [
+              {
+                "id": "tbl-078",
+                "type": "table",
+                "content": {
+                  "type": "tableContent",
+                  "columnWidths": [
+                    220,
+                    220
+                  ],
+                  "rows": [
+                    {
+                      "cells": [
+                        "Oral hygiene",
+                        "● Tooth brushing: ... times a day, morning and evening\n\n● Manual / powered toothbrush\n\n● Tooth brushing-related\n\n• Brushes __________ times/ a day\n• Replaces toothbrush every ________\n• Time taken for completion of tooth cleaning (eg. 5 mins once):"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Toothpaste: ...\n\nWith ____________toothpaste (Fluoridated? Yes/No)",
+                        ""
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "ID cleaning: ...\n\n● Interdental cleaning-related\n\n• Interdental brushes:\n• Floss:\n• Toothpicks:\n• Water Floss:",
+                        ""
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Mouthrinse: ...",
+                        ""
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Diet Analysis",
+                        "Meals:.../day\n\nEating habits\n\n• Regular/ irregular meals _________times per day\n• Breakfast:\n• Lunch:\n• Dinner:\n• Daily intake of fresh vegetables and fruit:"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Snacks:...\n\nSnacking __________times per day\n\n■ Likes to eat ______________\n\n• Sour food and drinks:\n• Sweet food:\n• Hard food:",
+                        ""
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Drinks:...\n\nCoffee with sugar:_________ times per week\n\nDrinks tea: ________ times per week",
+                        ""
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Lifestyle",
+                        "Smoker/ Previous smoker/ Non-smoker\n\n• Since when:\n• How many cigarettes per day:\n• Pack years:\n• When did they quit:\n• Willingness to quit/ previous attempts to quit/ reasons for failure to quit:"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Heavy alcohol drinker/ Social alcohol drinker/ non- alcohol drinker\n\n• Since when:\n• How many units per day:\n• Type of alcohol:",
+                        ""
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Stress:\n\nOccupation: ..., full/part-time\n\n• ________________\n• Pressure level: ____ out of 10\n• Source of pressure:",
+                        ""
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Parafunctional habits",
+                        "• Biting nails/ pens: Yes/ No\n• Bruxism: Yes/ No\n\n• Clenching: Yes/ No\n• Grinding: Yes/No"
+                      ]
+                    }
+                  ],
+                  "headerRows": 4
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "h-079",
+        "type": "heading",
+        "props": {
+          "level": 1
+        },
+        "content": "Clinical examination",
+        "children": [
+          {
+            "id": "h-080",
+            "type": "heading",
+            "props": {
+              "level": 2
+            },
+            "content": "Extra-Oral Examination",
+            "children": [
+              {
+                "id": "tbl-081",
+                "type": "table",
+                "content": {
+                  "type": "tableContent",
+                  "columnWidths": [
+                    220,
+                    220
+                  ],
+                  "rows": [
+                    {
+                      "cells": [
+                        "Facial features",
+                        "● Overall appraisal\n\n• Long/ short face\n• Prominent jaw bones: Yes/ No\n• Small oral cavity: Yes/ No"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Facial symmetry",
+                        "● Gross facial asymmetry: Yes/ No\n\n● Obvious facial swelling: Yes/ No"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Lip competency",
+                        "... Lips competent at rest: Yes/ No"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Lymph nodes",
+                        "Pain: Yes/ No\n\nSwelling: Yes/ No"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "TMJ",
+                        "● Right TMJ\n\n• Clicking: Yes/ No\n• Pain: Yes/ No\n• Deviation: Yes/ No\n\n● Left TMJ\n\n• Clicking: Yes/ No\n• Pain: Yes/ No\n• Deviation: Yes/ No"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Maximum mouth opening",
+                        "... mm"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Muscles of mastication / Masticatory muscles",
+                        "Pain: Yes/ No\n\nSwelling: Yes/ No\n\nUncontrolled muscular activity: Yes/ No\n\nDifficulties in pronouncing certain words and letters, and lisping, or posturing of the mandible and tongue or lips during speaking:"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Test lip/chin sensation",
+                        ""
+                      ]
+                    }
+                  ],
+                  "headerRows": 1
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "h-082",
+        "type": "heading",
+        "props": {
+          "level": 1
+        },
+        "content": "Clinical photographs",
+        "children": [
+          {
+            "id": "p-083",
+            "type": "paragraph",
+            "content": "For periodontitis cases, you also need to take photos of each sextant, totalling to 9 intraoral photos."
+          },
+          {
+            "id": "tbl-084",
+            "type": "table",
+            "content": {
+              "type": "tableContent",
+              "columnWidths": [
+                220,
+                220,
+                220
+              ],
+              "rows": [
+                {
+                  "cells": [
+                    "Upper right palatal",
+                    "Upper occlusal anterior",
+                    "Upper left palatal"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Right buccal",
+                    "Frontal (ICP)",
+                    "Left buccal"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Lower right lingual",
+                    "Lower occlusal anterior",
+                    "Lower left lingual"
+                  ]
+                }
+              ],
+              "headerRows": 1
+            }
+          },
+          {
+            "id": "p-085",
+            "type": "paragraph",
+            "content": "Additional photographs"
+          },
+          {
+            "id": "tbl-086",
+            "type": "table",
+            "content": {
+              "type": "tableContent",
+              "columnWidths": [
+                220,
+                220,
+                220
+              ],
+              "rows": [
+                {
+                  "cells": [
+                    "Upper occlusal (complete arch)",
+                    "Lower occlusal (complete arch)",
+                    "Frontal photograph with denture"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Denture (cameo)",
+                    "Denture (intaglio)",
+                    "Soft tissue lesions (with perio probe/ruler for reference)"
+                  ]
+                }
+              ],
+              "headerRows": 1
+            }
+          },
+          {
+            "id": "p-087",
+            "type": "paragraph",
+            "content": "For each image"
+          },
+          {
+            "id": "tbl-088",
+            "type": "table",
+            "content": {
+              "type": "tableContent",
+              "columnWidths": [
+                220,
+                220
+              ],
+              "rows": [
+                {
+                  "cells": [
+                    "Notes",
+                    "Presence of plaque/ calculus/ any other notable findings"
+                  ]
+                }
+              ],
+              "headerRows": 1
+            }
+          },
+          {
+            "id": "h-089",
+            "type": "heading",
+            "props": {
+              "level": 2
+            },
+            "content": "Intra-Oral Examination",
+            "children": [
+              {
+                "id": "tbl-090",
+                "type": "table",
+                "content": {
+                  "type": "tableContent",
+                  "columnWidths": [
+                    220,
+                    220
+                  ],
+                  "rows": [
+                    {
+                      "cells": [
+                        "Soft tissue Lips",
+                        "Yes/No"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Cheeks",
+                        "No / Yes, location:"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Alveolar ridges",
+                        "No / Yes, location:"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Hard palate",
+                        "No / Yes, location:"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Soft palate",
+                        "No / Yes, location:"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Tongue",
+                        "No / Yes, location:"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Sublingual area / floor of mouth",
+                        "No / Yes, location:"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Tonsils and oropharynx",
+                        "No / Yes, location:"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Red and swollen gum:",
+                        "No / Yes, location:"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Gingival recession / enlargement:",
+                        ""
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Salivary glands:",
+                        "Parotid:\n\nSubmandibular glands:\n\n(feeling for lumps, checking for dryness)"
+                      ]
+                    }
+                  ],
+                  "headerRows": 1
+                }
+              },
+              {
+                "id": "p-091",
+                "type": "paragraph",
+                "content": "Red-flag screening in the mouth"
+              },
+              {
+                "id": "tbl-092",
+                "type": "table",
+                "content": {
+                  "type": "tableContent",
+                  "columnWidths": [
+                    220,
+                    220
+                  ],
+                  "rows": [
+                    {
+                      "cells": [
+                        "Ulcer lasting more than 3 weeks",
+                        "Yes/No..."
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Hard/fixed lesion",
+                        "Yes/No..."
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Red or white patches",
+                        "Yes/No..."
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Unexplained numbness",
+                        "Yes/No..."
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Jaw stiffness (trismus)",
+                        "Yes/No..."
+                      ]
+                    }
+                  ],
+                  "headerRows": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "h-093",
+            "type": "heading",
+            "props": {
+              "level": 2
+            },
+            "content": "Occlusion",
+            "children": [
+              {
+                "id": "tbl-094",
+                "type": "table",
+                "content": {
+                  "type": "tableContent",
+                  "columnWidths": [
+                    220,
+                    220
+                  ],
+                  "rows": [
+                    {
+                      "cells": [
+                        "ICP",
+                        "Stable/ unstable"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Incisor relationship",
+                        "Class I/ II/ III\n\nOpen bite (contact pairs: ____ and ____)\n\nOverjet: _____ mm\n\nOverbite: _____ mm\n\ne.g."
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Molar relationship",
+                        "Class_______\n\ne.g."
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Midline",
+                        ""
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Misalignment",
+                        ""
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Maximum opening",
+                        "mm"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Guidance on protrusion",
+                        ""
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Left lateral excursion",
+                        "Canine guidance/ group function"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Right lateral excursion",
+                        "Canine guidance/ group function"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Fremitus",
+                        ""
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Working side/ non-working side interference:",
+                        ""
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Tooth drifting / Pathological migration",
+                        ""
+                      ]
+                    }
+                  ],
+                  "headerRows": 1
+                }
+              },
+              {
+                "id": "p-095",
+                "type": "paragraph",
+                "content": "Class I/ II/ III (detail table)"
+              },
+              {
+                "id": "tbl-096",
+                "type": "table",
+                "content": {
+                  "type": "tableContent",
+                  "columnWidths": [
+                    220,
+                    220,
+                    220
+                  ],
+                  "rows": [
+                    {
+                      "cells": [
+                        "Tooth",
+                        "Overjet",
+                        "Overbite"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "11",
+                        "2mm",
+                        "3mm"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "21",
+                        "NAD",
+                        "NAD"
+                      ]
+                    }
+                  ],
+                  "headerRows": 1
+                }
+              },
+              {
+                "id": "p-097",
+                "type": "paragraph",
+                "content": "Class_______ (detail table)"
+              },
+              {
+                "id": "tbl-098",
+                "type": "table",
+                "content": {
+                  "type": "tableContent",
+                  "columnWidths": [
+                    220,
+                    220,
+                    220
+                  ],
+                  "rows": [
+                    {
+                      "cells": [
+                        "",
+                        "Left",
+                        "Right"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Molar relationship",
+                        "Class I",
+                        "Class I"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Incisor relationship",
+                        "Class I",
+                        "Class I"
+                      ]
+                    }
+                  ],
+                  "headerRows": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "h-099",
+            "type": "heading",
+            "props": {
+              "level": 2
+            },
+            "content": "Charting",
+            "children": [
+              {
+                "id": "odtp-tooth-chart",
+                "type": "paragraph",
+                "content": "Hard tissue chart (amber = finding, red = danger). Missing teeth show × until overridden."
+              },
+              {
+                "id": "odtp-tooth-chart-block",
+                "type": "toothChart",
+                "props": {
+                  "teeth": "00000000000000000000000000000000"
+                }
+              },
+              {
+                "id": "p-100",
+                "type": "paragraph",
+                "content": "Periodontal chart image (uploaded)"
+              },
+              {
+                "id": "p-101",
+                "type": "paragraph",
+                "content": "Hard tissue chart image (uploaded)"
+              }
+            ]
+          },
+          {
+            "id": "h-102",
+            "type": "heading",
+            "props": {
+              "level": 2
+            },
+            "content": "Hard Tissues",
+            "children": [
+              {
+                "id": "tbl-103",
+                "type": "table",
+                "content": {
+                  "type": "tableContent",
+                  "columnWidths": [
+                    220,
+                    220
+                  ],
+                  "rows": [
+                    {
+                      "cells": [
+                        "Missing teeth",
+                        "..."
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Unerupted",
+                        "...\n\n● Wisdom teeth\n\n• ______ unerupted\n• ______ partially erupted\n• _______ impacted\n• ______ fully erupted"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Enamel defects",
+                        "Craze line: ...\n\nChipped incisal edge: ...\n\nFractured cusp: ..."
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Pre - Existing restorations",
+                        "Amalgam: ...\n\nComposite: ...\n\n• Fissure sealants (e.g 17 fully sealed/ partially sealed, stains at margin):\n• Amalgam restoration:\n• Tooth-colored restoration:"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Abrasion",
+                        "..."
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Erosion",
+                        "...\n\nTable: Basic erosive wear examination (BEWE)"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Attrition",
+                        "...\n\nPresence of facets:\n\nEnamel flaking and cusp fractures:\n\nSymptoms of various craniomandibular disorders:"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Caries",
+                        "e.g., 38 MO: ICDAS ..."
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Non-carious tooth surface loss",
+                        "…"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Retained roots",
+                        "..."
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Overeruption",
+                        "..."
+                      ]
+                    }
+                  ],
+                  "headerRows": 1
+                }
+              },
+              {
+                "id": "p-104",
+                "type": "paragraph",
+                "content": "... (detail table)"
+              },
+              {
+                "id": "tbl-105",
+                "type": "table",
+                "content": {
+                  "type": "tableContent",
+                  "columnWidths": [
+                    220,
+                    220
+                  ],
+                  "rows": [
+                    {
+                      "cells": [
+                        "Score",
+                        "Description"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "0",
+                        "No erosive tooth wear on any surfaces (excludes third molars)"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "1",
+                        "Initial loss of surface texture"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "2*",
+                        "Distinct defect, hard tissue loss <50% of the surface area"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "3*",
+                        "Hard tissue loss3 50% of the surface loss"
+                      ]
+                    }
+                  ],
+                  "headerRows": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "h-106",
+            "type": "heading",
+            "props": {
+              "level": 2
+            },
+            "content": "Periodontal findings",
+            "children": [
+              {
+                "id": "tbl-107",
+                "type": "table",
+                "content": {
+                  "type": "tableContent",
+                  "columnWidths": [
+                    220,
+                    220
+                  ],
+                  "rows": [
+                    {
+                      "cells": [
+                        "Light Plaque and Calculus deposits",
+                        "Location:"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Moderate plaque",
+                        "Location:"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Heavy calculus",
+                        "Location:"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Gingival inflammation",
+                        "..."
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Suppuration",
+                        "..."
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Increased PPD",
+                        "..."
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Recession",
+                        "...\n\n■ Significant positive recession up to 1mm detected:\n\n■ Negative recession:"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Clinical attachment loss",
+                        "Site of greatest loss: ... (... mm)\n\n• In terms of probing depth:\n\n■ Majority of sites are presented with ________mm probing depth\n\n■ Probing depth = 4mm:\n\n■ Probing depth ≥ 5mm:"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Furcation involvement (class I-III)",
+                        "III: ...\n\nII: ...\n\nI: ..."
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Increased mobility / Hypermobility (degree I-III)",
+                        "III: ...\n\nII: ...\n\nI: ..."
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Full mouth bleeding score",
+                        "_____ sites out of _____ sites = ___%\n\n• Distribution: Mainly _____________/ Dispersed\n• Quality: Mild/ Moderate/ Severe bleeding"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Full mouth plaque score",
+                        "_____ sites out of _____ sites = ___%"
+                      ]
+                    },
+                    {
+                      "cells": [
+                        "Tooth anatomical features",
+                        "Such as: furcations, cervical enamel projections, grooves"
+                      ]
+                    }
+                  ],
+                  "headerRows": 1
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "h-108",
+        "type": "heading",
+        "props": {
+          "level": 1
+        },
+        "content": "Radiographic Examination",
+        "children": [
+          {
+            "id": "p-109",
+            "type": "paragraph",
+            "content": "Panoramic radiograph"
+          },
+          {
+            "id": "p-110",
+            "type": "paragraph",
+            "content": "Uploaded image"
+          },
+          {
+            "id": "p-111",
+            "type": "paragraph",
+            "content": "For image"
+          },
+          {
+            "id": "tbl-112",
+            "type": "table",
+            "content": {
+              "type": "tableContent",
+              "columnWidths": [
+                220,
+                220
+              ],
+              "rows": [
+                {
+                  "cells": [
+                    "Notes",
+                    "Include description\n\n- When was it taken\n\n- Apparent pathology in the maxilla, mandible or TMJ\n\n- Missing teeth, unerupted/ partially erupted teeth, impacted (type of impaction)\n\n- Retained roots\n\n- Generalized alveolar bone loss\n\n- Interdental crestal alveolar bone levels\n\n- Patterns of bone loss: horizontal and/or angular (vertical) bone loss\n\n- Radiopacity\n\n- Radiolucency\n\n- Check for inferior alveolar nerve proximity (darkened root, interrupted canal lines, narrowing of the canal) for lower wisdom teeth"
+                  ]
+                }
+              ],
+              "headerRows": 1
+            }
+          },
+          {
+            "id": "p-113",
+            "type": "paragraph",
+            "content": "Intraoral radiographs"
+          },
+          {
+            "id": "p-114",
+            "type": "paragraph",
+            "content": "M/PM/C/I/I/C/PM/M"
+          },
+          {
+            "id": "p-115",
+            "type": "paragraph",
+            "content": "BW right/ BW left"
+          },
+          {
+            "id": "p-116",
+            "type": "paragraph",
+            "content": "M/PM/C/I/I/C/PM/M"
+          },
+          {
+            "id": "p-117",
+            "type": "paragraph",
+            "content": "Left & Right Bitewing and Periapical of ____"
+          },
+          {
+            "id": "tbl-118",
+            "type": "table",
+            "content": {
+              "type": "tableContent",
+              "columnWidths": [
+                220,
+                220
+              ],
+              "rows": [
+                {
+                  "cells": [
+                    "Include description - When was it taken\n\nE.g. Periapical of 17-15 (taken on 3/6/24)",
+                    "- Coronal findings (radiolucency, impacted, radiopacity\n\n– Restorations, abnormality, tooth surface loss)\n\n- Radicular findings: canal obliterations, internal/ external resorptions, root formation\n\n- Widening of PDL space\n\n- Periapical radiolucency/ other pathology\n\n- Horizontal/ vertical bone loss"
+                  ]
+                }
+              ],
+              "headerRows": 1
+            }
+          },
+          {
+            "id": "p-119",
+            "type": "paragraph",
+            "content": "CBCT"
+          },
+          {
+            "id": "p-120",
+            "type": "paragraph",
+            "content": "If indicated (for complex cases)."
+          },
+          {
+            "id": "p-121",
+            "type": "paragraph",
+            "content": "Any specific views that should be saved as screenshots?"
+          }
+        ]
+      },
+      {
+        "id": "h-122",
+        "type": "heading",
+        "props": {
+          "level": 1
+        },
+        "content": "Intraoral scan",
+        "children": [
+          {
+            "id": "p-123",
+            "type": "paragraph",
+            "content": "If indicated (for complex cases)."
+          },
+          {
+            "id": "p-124",
+            "type": "paragraph",
+            "content": "Uploaded file(s)."
+          },
+          {
+            "id": "p-125",
+            "type": "paragraph",
+            "content": "Any specific views that should be saved as screenshots?"
+          }
+        ]
+      },
+      {
+        "id": "h-126",
+        "type": "heading",
+        "props": {
+          "level": 1
+        },
+        "content": "Special investigations",
+        "children": [
+          {
+            "id": "p-127",
+            "type": "paragraph",
+            "content": "Pulp sensitivity assessment"
+          },
+          {
+            "id": "tbl-128",
+            "type": "table",
+            "content": {
+              "type": "tableContent",
+              "columnWidths": [
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100
+              ],
+              "rows": [
+                {
+                  "cells": [
+                    "Tooth number",
+                    "Cold Test",
+                    "Heat test",
+                    "EPT (reading, duration)",
+                    "TTP (scale)",
+                    "TTPalp.",
+                    "Bite test/ transillumination"
+                  ]
+                },
+                {
+                  "cells": [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                  ]
+                },
+                {
+                  "cells": [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                  ]
+                }
+              ],
+              "headerRows": 1
+            }
+          },
+          {
+            "id": "p-129",
+            "type": "paragraph",
+            "content": "Existing prosthesis"
+          },
+          {
+            "id": "p-130",
+            "type": "paragraph",
+            "content": "Removable prosthesis:"
+          },
+          {
+            "id": "p-131",
+            "type": "paragraph",
+            "content": "type, existing prosthesis design (extension), support, stability, retention, aesthetics, hygiene, history (when, where, why)"
+          },
+          {
+            "id": "p-132",
+            "type": "paragraph",
+            "content": "Fixed prosthesis:"
+          },
+          {
+            "id": "p-133",
+            "type": "paragraph",
+            "content": "type, existing prosthesis design, margin, vitality of abutment, hygiene, history"
+          }
+        ]
+      },
+      {
+        "id": "h-134",
+        "type": "heading",
+        "props": {
+          "level": 1
+        },
+        "content": "Risk Assessment",
+        "children": [
+          {
+            "id": "p-135",
+            "type": "paragraph",
+            "content": "Caries Risk Assessment"
+          },
+          {
+            "id": "tbl-136",
+            "type": "table",
+            "content": {
+              "type": "tableContent",
+              "columnWidths": [
+                220,
+                220
+              ],
+              "rows": [
+                {
+                  "cells": [
+                    "Risk Factor Assessment",
+                    "[table]"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Risk level",
+                    "[table]"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Caries Management Recommend Action\n\nMOVE TO TREATMENT",
+                    "Recall Interval\n\n- Low risk: 6-12 months\n\n- Moderate risk: 6 months\n\n- High risk: 3 months"
+                  ]
+                }
+              ],
+              "headerRows": 1
+            }
+          },
+          {
+            "id": "p-137",
+            "type": "paragraph",
+            "content": "Details (detail table)"
+          },
+          {
+            "id": "tbl-138",
+            "type": "table",
+            "content": {
+              "type": "tableContent",
+              "columnWidths": [
+                220,
+                220
+              ],
+              "rows": [
+                {
+                  "cells": [
+                    "Risk Factor",
+                    "Yes/ No"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Visible Plaque",
+                    ""
+                  ]
+                },
+                {
+                  "cells": [
+                    "No Fluoride Exposure",
+                    ""
+                  ]
+                },
+                {
+                  "cells": [
+                    "Crowding/ deep pits and fissures",
+                    ""
+                  ]
+                },
+                {
+                  "cells": [
+                    "Any dental appliances",
+                    ""
+                  ]
+                },
+                {
+                  "cells": [
+                    "Sugar/ snack intake between meals",
+                    ""
+                  ]
+                },
+                {
+                  "cells": [
+                    "Medically compromised",
+                    ""
+                  ]
+                },
+                {
+                  "cells": [
+                    "Mother/ sibling caries experience history",
+                    ""
+                  ]
+                },
+                {
+                  "cells": [
+                    "Dry mouth",
+                    ""
+                  ]
+                }
+              ],
+              "headerRows": 1
+            }
+          },
+          {
+            "id": "p-139",
+            "type": "paragraph",
+            "content": "Details (detail table)"
+          },
+          {
+            "id": "tbl-140",
+            "type": "table",
+            "content": {
+              "type": "tableContent",
+              "columnWidths": [
+                175,
+                175,
+                175,
+                175
+              ],
+              "rows": [
+                {
+                  "cells": [
+                    "Number of risk factors",
+                    "No active caries lesions (ICDAS 0)",
+                    "Initial-stage active caries lesions (ICDAS 1 & 2)",
+                    "Moderate or extensive active caries lesions (ICDAS 3-6)"
+                  ]
+                },
+                {
+                  "cells": [
+                    "0",
+                    "Low",
+                    "Moderate",
+                    "Moderate"
+                  ]
+                },
+                {
+                  "cells": [
+                    "1/2",
+                    "Low",
+                    "Moderate",
+                    "High"
+                  ]
+                },
+                {
+                  "cells": [
+                    "3/4",
+                    "Moderate",
+                    "High",
+                    "High"
+                  ]
+                }
+              ],
+              "headerRows": 1
+            }
+          },
+          {
+            "id": "p-141",
+            "type": "paragraph",
+            "content": "Recall Interval (detail table)"
+          },
+          {
+            "id": "tbl-142",
+            "type": "table",
+            "content": {
+              "type": "tableContent",
+              "columnWidths": [
+                220,
+                220
+              ],
+              "rows": [
+                {
+                  "cells": [
+                    "",
+                    "Treatments"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Primary prevention",
+                    "• Brush twice a day with fluoride toothpaste\n• Patient education (e.g. OHI and dietary advice)\n• Dietary counselling"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Secondary prevention",
+                    "• Fluoride varnish\n• Sealant application\n• Diet counselling\n• Chew sugar free gum\n• Prescribe home fluoride gel\n• Prescribe home fluoride mouthwash\n• Adequate removal of active primary caries in the first instance"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Tertiary prevention",
+                    "• Minimally invasive treatment\n• Restoration"
+                  ]
+                }
+              ],
+              "headerRows": 1
+            }
+          },
+          {
+            "id": "p-143",
+            "type": "paragraph",
+            "content": "Periodontal Risk Assessment"
+          },
+          {
+            "id": "tbl-144",
+            "type": "table",
+            "content": {
+              "type": "tableContent",
+              "columnWidths": [
+                220,
+                220
+              ],
+              "rows": [
+                {
+                  "cells": [
+                    "Patient - Level Factors",
+                    "● Family history of diabetes: Yes/ No\n\n● Smoker/ Previous smoker/ Non-smoker\n\n● Pressure level:____ out of 10\n\n● Regular/ non-regular attendee\n\n● Symptom driven/ non-symptom driven\n\n● Oral hygiene control\n\n• Light/ Moderate/ Heavy plaque\n• Light/ Moderate/ Heavy calculus\n• Brush _________ a day with _______ toothbrush\n• Interdental cleaning:\n\n● Gingival inflammation up to________% of sites"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Tooth-Level Factors",
+                    "● Crowding:\n\n● Partially erupted and Impacted teeth:\n\n● Furcation involvement:\n\n● Abnormal mobility of teeth:\n\n● Overhanging margins of restorations:"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Site-Level Factors",
+                    "● ________% sites have bleeding on probing\n\n● Majority of sites are presented with ________mm pocket depth\n\n● Probing depth = 4mm\n\n● Probing depth ≥ 5mm"
+                  ]
+                }
+              ],
+              "headerRows": 1
+            }
+          }
+        ]
+      },
+      {
+        "id": "h-145",
+        "type": "heading",
+        "props": {
+          "level": 1
+        },
+        "content": "Diagnosis",
+        "children": [
+          {
+            "id": "p-146",
+            "type": "paragraph",
+            "content": "XX years old Chinese male / female presenting with:"
+          },
+          {
+            "id": "tbl-147",
+            "type": "table",
+            "content": {
+              "type": "tableContent",
+              "columnWidths": [
+                220,
+                220
+              ],
+              "rows": [
+                {
+                  "cells": [
+                    "Caries",
+                    "Active caries, arrested caries with ICDAS code"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Periodontal",
+                    "Periodontal health\n\nOR\n\nGingival inflammation on reduced periodontium\n\nOR\n\nLocalised/Generalised gingivitis\n\nOR\n\nPeriodontitis\n\nSupport with diagnostic criteria from the 2017 Classification of Periodontal and Peri-implant Diseases and Conditions (see the reference table below)\n\nPeri-implant mucositis\n\n…\n\nPeri-implantitis\n\n…"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Endodontic",
+                    "Endodontic diagnosis"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Edentulism",
+                    "Missing teeth, impacted teeth, retained root"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Others",
+                    "Tooth wear, Defective restorations, previous restorations"
+                  ]
+                }
+              ],
+              "headerRows": 1
+            }
+          },
+          {
+            "id": "p-148",
+            "type": "paragraph",
+            "content": "Periodontal health (detail table)"
+          },
+          {
+            "id": "tbl-149",
+            "type": "table",
+            "content": {
+              "type": "tableContent",
+              "columnWidths": [
+                220
+              ],
+              "rows": [
+                {
+                  "cells": [
+                    "Extent"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Staging"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Grading"
+                  ]
+                }
+              ],
+              "headerRows": 1
+            }
+          },
+          {
+            "id": "p-150",
+            "type": "paragraph",
+            "content": "Periodontal health (detail table)"
+          },
+          {
+            "id": "tbl-151",
+            "type": "table",
+            "content": {
+              "type": "tableContent",
+              "columnWidths": [
+                116,
+                116,
+                116,
+                116,
+                116,
+                116
+              ],
+              "rows": [
+                {
+                  "cells": [
+                    "Periodontitis stage",
+                    "Stage I",
+                    "Stage II",
+                    "Stage III",
+                    "Stage IV",
+                    ""
+                  ]
+                },
+                {
+                  "cells": [
+                    "Severity",
+                    "Interdental CAL at site of greatest loss",
+                    "1 to 2 mm",
+                    "3 to 4mm",
+                    "≥ 5mm",
+                    "≥ 5mm"
+                  ]
+                },
+                {
+                  "cells": [
+                    "",
+                    "Radiographic bone loss",
+                    "Coronal third (<15%)",
+                    "Coronal third (15% to 33%)",
+                    "Extending to mid-third of root and beyond",
+                    "Extending to mid-third of root and beyond"
+                  ]
+                },
+                {
+                  "cells": [
+                    "",
+                    "Tooth loss",
+                    "No tooth loss due to periodontitis",
+                    "Tooth loss due to periodontitis of ≤ 4 teeth",
+                    "Tooth loss due to periodontitis of ≥ 5 teeth",
+                    ""
+                  ]
+                },
+                {
+                  "cells": [
+                    "Complexity",
+                    "Local",
+                    "Maximum probing depth ≤ 4 mm\n\nMostly horizontal bone loss",
+                    "Maximum probing depth ≤ 5 mm\n\nMostly horizontal bone loss",
+                    "In addition to stage II complexity:\n\nProbing depth ≥ 6 mm\n\nVertical bone loss ≥ 3 mm\n\nFurcation involvement Class II or III\n\nModerate ridge defect",
+                    "In addition to stage III complexity:\n\nNeed for complex rehabilitation due to:\n\nMasticatory dysfunction\n\nSecondary occlusal trauma (tooth mobility degree ≥ 2)\n\nSevere ridge defect\n\nBite collapse, drifting, flaring\n\nLess than 20 remaining teeth (10 opposing pairs)"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Extent and distribution",
+                    "Add to stage as descriptor",
+                    "For each stage, describe extent as localized (<30% of teeth involved), generalized, or molar/incisor pattern",
+                    "",
+                    "",
+                    ""
+                  ]
+                }
+              ],
+              "headerRows": 1
+            }
+          },
+          {
+            "id": "p-152",
+            "type": "paragraph",
+            "content": "Periodontal health (detail table)"
+          },
+          {
+            "id": "tbl-153",
+            "type": "table",
+            "content": {
+              "type": "tableContent",
+              "columnWidths": [
+                116,
+                116,
+                116,
+                116,
+                116,
+                116
+              ],
+              "rows": [
+                {
+                  "cells": [
+                    "Periodontitis grade",
+                    "Grade A: Slow rate of progression",
+                    "Grade B: Moderate rate of progression",
+                    "Grade C: Rapid rate of progression",
+                    "",
+                    ""
+                  ]
+                },
+                {
+                  "cells": [
+                    "Primary criteria",
+                    "Direct evidence of progression",
+                    "Longitudinal data (radiographic bone loss or CAL)",
+                    "Evidence of no loss over 5 years",
+                    "<2mm over 5 years",
+                    "≥2mm over 5 years"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Indirect evidence of progression",
+                    "% bone loss/age",
+                    "<0.25",
+                    "0.25 to 1.0",
+                    ">1.0",
+                    ""
+                  ]
+                },
+                {
+                  "cells": [
+                    "Case phenotype",
+                    "Heavy biofilm deposits with low levels of destruction",
+                    "Destruction commensurate with biofilm deposits",
+                    "Destruction exceeds expectation given biofilm deposits; specific clinical patterns suggestive of periods of rapid progression and/or early onset disease (e.g., molar/incisor pattern; lack of expected response to standard bacterial control therapies)",
+                    "",
+                    ""
+                  ]
+                },
+                {
+                  "cells": [
+                    "Grade modifiers",
+                    "Risk factors",
+                    "smoking",
+                    "Non-smoker",
+                    "Smoker <10 cigarettes/day",
+                    "Smoker ≥10 cigarettes/day"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Diabetes",
+                    "Normoglycemic / no diagnosis of diabetes",
+                    "HbA1c <7.0% in patients with diabetes",
+                    "HbA1c ≥7.0% in patients with diabetes",
+                    "",
+                    ""
+                  ]
+                },
+                {
+                  "cells": [
+                    "Risk of systemic impact of periodontitis",
+                    "Inflammatory burden",
+                    "High sensitivity CRP (hsCRP)",
+                    "<1 mg/L",
+                    "1 to 3 mg/L",
+                    ">3 mg/L"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Biomarkers",
+                    "Indicators of CAL / bone loss",
+                    "Saliva, gingival crevicular fluid, serum",
+                    "?",
+                    "?",
+                    "?"
+                  ]
+                }
+              ],
+              "headerRows": 1
+            }
+          },
+          {
+            "id": "h-154",
+            "type": "heading",
+            "props": {
+              "level": 2
+            },
+            "content": "Differential diagnosis",
+            "children": [
+              {
+                "id": "ol-155",
+                "type": "numberedListItem",
+                "content": "…"
+              },
+              {
+                "id": "ol-156",
+                "type": "numberedListItem",
+                "content": "…"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "h-157",
+        "type": "heading",
+        "props": {
+          "level": 1
+        },
+        "content": "Prognosis",
+        "children": [
+          {
+            "id": "p-158",
+            "type": "paragraph",
+            "content": "Good/fair/poor/hopeless OR irrational to treat/questionable/secure per tooth or overall comments"
+          }
+        ]
+      },
+      {
+        "id": "h-159",
+        "type": "heading",
+        "props": {
+          "level": 1
+        },
+        "content": "Treatment options",
+        "children": [
+          {
+            "id": "ol-160",
+            "type": "numberedListItem",
+            "content": "..."
+          },
+          {
+            "id": "ol-161",
+            "type": "numberedListItem",
+            "content": "..."
+          },
+          {
+            "id": "ol-162",
+            "type": "numberedListItem",
+            "content": "…"
+          },
+          {
+            "id": "p-163",
+            "type": "paragraph",
+            "content": "Communication with patient"
+          }
+        ]
+      },
+      {
+        "id": "h-164",
+        "type": "heading",
+        "props": {
+          "level": 1
+        },
+        "content": "Treatment Plan",
+        "children": [
+          {
+            "id": "tbl-165",
+            "type": "table",
+            "content": {
+              "type": "tableContent",
+              "columnWidths": [
+                220,
+                220
+              ],
+              "rows": [
+                {
+                  "cells": [
+                    "Referral(s)",
+                    ""
+                  ]
+                },
+                {
+                  "cells": [
+                    "Emergency phase",
+                    "• RCT\n• Extraction"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Systemic phase",
+                    ""
+                  ]
+                },
+                {
+                  "cells": [
+                    "Preventive & Hygienic phase",
+                    "Step 1 - Periodontal therapy\n\n• Dietary analysis and advice\n• Professional mechanical plaque removal\n• OHI with GPS approach\n• Goal setting (FMPS <25%, FMBS <20%)\n• Planning: Plaque disclosing agent to aid patient’s awareness on cleaning all tooth surfaces, instruct patient to brush with modified bass technique, introduce the use of site-specific ID brush\n• Self-monitoring: Keeping track of the progress by using disclosing tablets and brushing in front of the mirror\n\nStep 2 - Periodontal therapy\n\n• Scaling to remove plaque and calculus\n• Carried out by _______using Ultrasonic EMS\n• Carried out in ______visits\n\nNon-surgical treatment to reduce caries risk\n\n• Dietary advice\n• Fissure sealant:\n• Prescribe desensitizing toothpaste:\n• Topic fluoride application:\n• Dentine bonding agent application:"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Restorative phase / Restorative & Endodontic / Treatment",
+                    "• Restore or replace/repair restoration on ____ (with _____ restorative material)\n• RCT on _____"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Periodontal Re-evaluation & Review before Rehabilitation",
+                    "Re-evaluate and decide future treatment needs\n\n• Periodontal\n• Caries risk\n• Tooth wear"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Rehabilitation and corrective phase",
+                    "Treatment option:\n\n1. Crown / Bridge / RBB / RPD / Complete Denture\n2. Implant\n3. No treatment"
+                  ]
+                },
+                {
+                  "cells": [
+                    "Maintenance phase",
+                    "Recall patient after 3 months\n\n• Review periodontal conditions\n• Examine the margins of restorations (e.g., discoloration of tooth-coloured restorations)"
+                  ]
+                }
+              ],
+              "headerRows": 1
+            }
+          },
+          {
+            "id": "h-166",
+            "type": "heading",
+            "props": {
+              "level": 2
+            },
+            "content": "Operator signature",
+            "children": [
+              {
+                "id": "p-167",
+                "type": "paragraph",
+                "content": "Signed / not signed"
+              }
+            ]
+          },
+          {
+            "id": "h-168",
+            "type": "heading",
+            "props": {
+              "level": 2
+            },
+            "content": "Supervisor signature",
+            "children": [
+              {
+                "id": "p-169",
+                "type": "paragraph",
+                "content": "Signed / not signed"
+              },
+              {
+                "id": "p-170",
+                "type": "paragraph",
+                "content": "[ODTP template - Section 2]"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "h-171",
+        "type": "heading",
+        "props": {
+          "level": 1
+        },
+        "content": "Treatment Timeline",
+        "children": [
+          {
+            "id": "tbl-172",
+            "type": "table",
+            "content": {
+              "type": "tableContent",
+              "columnWidths": [
+                220
+              ],
+              "rows": [
+                {
+                  "cells": [
+                    "• Emergency phase (Completed on xx/xx/xxxx, supervised by)\n• Systemic phase\n• Preventive & Hygienic phase\n• Restorative phase / Restorative & Endodontic / Treatment\n• Periodontal Re-evaluation & Review before Rehabilitation\n• Rehabilitative and corrective phase\n• Maintenance phase"
+                  ]
+                }
+              ],
+              "headerRows": 1
+            }
+          },
+          {
+            "id": "p-173",
+            "type": "paragraph",
+            "content": "Status",
+            "children": [
+              {
+                "id": "ul-174",
+                "type": "bulletListItem",
+                "content": "Completed"
+              },
+              {
+                "id": "ul-175",
+                "type": "bulletListItem",
+                "content": "Discharged"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

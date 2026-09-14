@@ -1,7 +1,25 @@
-import { useCreateBlockNote } from '@blocknote/react';
+import { useMemo, useEffect } from 'react';
+import { filterSuggestionItems } from '@blocknote/core';
+import { withCollaboration } from '@blocknote/core/yjs';
+import {
+  SuggestionMenuController,
+  getDefaultReactSlashMenuItems,
+  useCreateBlockNote,
+} from '@blocknote/react';
 import { BlockNoteView } from '@blocknote/mantine';
 import { createRoot } from 'react-dom/client';
-import { useEffect } from 'react';
+import { MissingTeethProvider } from './blocks/MissingTeeth';
+import { insertToothChartItem, schema } from './blocks/schema';
+import { DEFAULT_USER, resolveUser } from './collab/users';
+import { useCollabSession } from './collab/useCollabSession';
+import {
+  canYRedo,
+  canYUndo,
+  clearYUndoStack,
+  ensureYUndoListening,
+  yRedo,
+  yUndo,
+} from './collab/yUndo';
 import '@blocknote/mantine/style.css';
 import './overrides.css';
 
@@ -39,14 +57,19 @@ function parseBlocks(value) {
   }
 }
 
-function ProseEditor({ initialBlocks, theme, editable, editorRef, onChange }) {
-  const editor = useCreateBlockNote({
-    initialContent: initialBlocks,
-    trailingBlock: editable,
-  });
+function parseJsonAttribute(value) {
+  if (!value || !value.trim()) return undefined;
+  try {
+    return JSON.parse(value);
+  } catch {
+    return undefined;
+  }
+}
 
+function useEditorLifecycle(editor, editorRef, onChange, onReady) {
   useEffect(() => {
     editorRef.current = editor;
+    onReady?.(editor);
     if (!onChange) {
       return () => {
         editorRef.current = null;
@@ -59,7 +82,18 @@ function ProseEditor({ initialBlocks, theme, editable, editorRef, onChange }) {
       unsubscribe();
       editorRef.current = null;
     };
-  }, [editor, editorRef, onChange]);
+  }, [editor, editorRef, onChange, onReady]);
+}
+
+function EditorView({ editor, theme, editable }) {
+  const getSlashMenuItems = useMemo(
+    () => async (query) =>
+      filterSuggestionItems(
+        [insertToothChartItem(editor), ...getDefaultReactSlashMenuItems(editor)],
+        query,
+      ),
+    [editor],
+  );
 
   return (
     <BlockNoteView
@@ -67,9 +101,145 @@ function ProseEditor({ initialBlocks, theme, editable, editorRef, onChange }) {
       theme={theme}
       editable={editable}
       formattingToolbar={editable}
-      slashMenu={editable}
+      slashMenu={false}
       sideMenu={editable}
+    >
+      {editable ? (
+        <SuggestionMenuController
+          triggerCharacter="/"
+          getItems={getSlashMenuItems}
+        />
+      ) : null}
+    </BlockNoteView>
+  );
+}
+
+function LocalProseEditor({
+  initialBlocks,
+  theme,
+  editable,
+  editorRef,
+  onChange,
+  onReady,
+}) {
+  const editor = useCreateBlockNote({
+    schema,
+    initialContent: initialBlocks,
+    trailingBlock: editable,
+  });
+  useEditorLifecycle(editor, editorRef, onChange, onReady);
+  return <EditorView editor={editor} theme={theme} editable={editable} />;
+}
+
+function CollabEditorReady({
+  doc,
+  provider,
+  user,
+  initialBlocks,
+  theme,
+  editable,
+  editorRef,
+  onChange,
+  onReady,
+}) {
+  const editor = useCreateBlockNote(
+    withCollaboration({
+      schema,
+      trailingBlock: editable,
+      collaboration: {
+        provider,
+        fragment: doc.getXmlFragment('document-store'),
+        user: {
+          name: user.username,
+          color: user.color,
+        },
+        showCursorLabels: 'activity',
+      },
+    }),
+    [provider, doc, user.color, user.username],
+  );
+
+  useEffect(() => {
+    ensureYUndoListening(editor);
+    const [first, ...rest] = editor.document;
+    const isEmptyPlaceholder =
+      rest.length === 0 &&
+      first?.type === 'paragraph' &&
+      first.id === 'initialBlockId';
+    if (isEmptyPlaceholder) {
+      editor.replaceBlocks(editor.document, initialBlocks);
+      clearYUndoStack(editor);
+    }
+  }, [editor, initialBlocks]);
+
+  useEditorLifecycle(editor, editorRef, onChange, onReady);
+  return <EditorView editor={editor} theme={theme} editable={editable} />;
+}
+
+function CollabProseEditor({
+  roomId,
+  user,
+  initialBlocks,
+  theme,
+  editable,
+  editorRef,
+  onChange,
+  onReady,
+}) {
+  const session = useCollabSession(roomId);
+  if (!session) {
+    return <div className="editor-connecting">Connecting to room…</div>;
+  }
+  return (
+    <CollabEditorReady
+      doc={session.doc}
+      provider={session.provider}
+      user={user}
+      initialBlocks={initialBlocks}
+      theme={theme}
+      editable={editable}
+      editorRef={editorRef}
+      onChange={onChange}
+      onReady={onReady}
     />
+  );
+}
+
+function ProseEditor({
+  initialBlocks,
+  theme,
+  editable,
+  editorRef,
+  onChange,
+  onReady,
+  roomId,
+  user,
+  missingTeeth,
+}) {
+  const editor = roomId ? (
+    <CollabProseEditor
+      roomId={roomId}
+      user={user}
+      initialBlocks={initialBlocks}
+      theme={theme}
+      editable={editable}
+      editorRef={editorRef}
+      onChange={onChange}
+      onReady={onReady}
+    />
+  ) : (
+    <LocalProseEditor
+      initialBlocks={initialBlocks}
+      theme={theme}
+      editable={editable}
+      editorRef={editorRef}
+      onChange={onChange}
+      onReady={onReady}
+    />
+  );
+
+  return (
+    <MissingTeethProvider teeth={missingTeeth}>{editor}</MissingTeethProvider>
   );
 }
 
@@ -86,6 +256,9 @@ export default class TextEditor {
     this.saveGeneration = 0;
     this.status = 'default';
     this.ignoreSave = false;
+    this.handleReady = () => {
+      this.props.onReady?.(this);
+    };
     this.handleChange = (blocks) => {
       const notes = JSON.stringify(blocks);
       const input = this.inputElement;
@@ -116,6 +289,21 @@ export default class TextEditor {
   get editable() {
     if (this.props.editable !== undefined) return Boolean(this.props.editable);
     return !this.target.hasAttribute('data-blocknote-readonly');
+  }
+
+  get roomId() {
+    return this.props.roomId || this.target.dataset.roomId || '';
+  }
+
+  get user() {
+    if (this.props.user) return this.props.user;
+    return resolveUser(this.target.dataset.userId);
+  }
+
+  get missingTeeth() {
+    if (Array.isArray(this.props.missingTeeth)) return this.props.missingTeeth;
+    const parsed = parseJsonAttribute(this.target.dataset.missingTeeth || '');
+    return Array.isArray(parsed) ? parsed : undefined;
   }
 
   parseInitialBlocks() {
@@ -149,6 +337,10 @@ export default class TextEditor {
         editable={this.editable}
         editorRef={this.editorRef}
         onChange={this.handleChange}
+        onReady={this.handleReady}
+        roomId={this.roomId}
+        user={this.user || DEFAULT_USER}
+        missingTeeth={this.missingTeeth}
       />,
     );
   }
@@ -182,6 +374,30 @@ export default class TextEditor {
 
   get document() {
     return this.editorRef.current?.document;
+  }
+
+  undo() {
+    const editor = this.editorRef.current;
+    if (!editor) return false;
+    return this.roomId ? yUndo(editor) : editor.undo();
+  }
+
+  redo() {
+    const editor = this.editorRef.current;
+    if (!editor) return false;
+    return this.roomId ? yRedo(editor) : editor.redo();
+  }
+
+  canUndo() {
+    const editor = this.editorRef.current;
+    if (!editor) return false;
+    return this.roomId ? canYUndo(editor) : true;
+  }
+
+  canRedo() {
+    const editor = this.editorRef.current;
+    if (!editor) return false;
+    return this.roomId ? canYRedo(editor) : true;
   }
 
   setStatus(status) {
