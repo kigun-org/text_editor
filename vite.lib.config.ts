@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => ({
       },
     },
     lib: {
-      entry: resolve(__dirname, 'src/text-editor.jsx'),
+      entry: resolve(import.meta.dirname, 'src/text-editor.jsx'),
       formats: ['es'],
       fileName: () => 'text-editor.js',
       cssFileName: 'text-editor',

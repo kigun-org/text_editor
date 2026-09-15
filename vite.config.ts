@@ -13,8 +13,8 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
-        dental: resolve(__dirname, 'dental.html'),
+        main: resolve(import.meta.dirname, 'index.html'),
+        dental: resolve(import.meta.dirname, 'dental.html'),
       },
     },
   },
