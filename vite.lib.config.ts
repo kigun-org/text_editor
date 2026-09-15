@@ -2,9 +2,15 @@ import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   publicDir: false,
   plugins: [react()],
+  define: {
+    'process.env.NODE_ENV': JSON.stringify(
+      mode === 'production' ? 'production' : 'development',
+    ),
+    global: 'globalThis',
+  },
   build: {
     cssCodeSplit: false,
     assetsInlineLimit: 1024 * 1024,
@@ -20,4 +26,4 @@ export default defineConfig({
       cssFileName: 'text-editor',
     },
   },
-});
+}));
