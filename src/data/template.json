@@ -955,7 +955,7 @@
               {
                 "id": "odtp-tooth-chart",
                 "type": "paragraph",
-                "content": "Hard tissue chart (amber = finding, red = danger). Missing teeth show × until overridden."
+                "content": "Hard tissue chart (amber = finding, red = error, × = missing)."
               },
               {
                 "id": "odtp-tooth-chart-block",

@@ -8,7 +8,6 @@ import {
 } from '@blocknote/react';
 import { BlockNoteView } from '@blocknote/mantine';
 import { createRoot } from 'react-dom/client';
-import { MissingTeethProvider } from './blocks/MissingTeeth';
 import { insertToothChartItem, schema } from './blocks/schema';
 import { DEFAULT_USER, resolveUser } from './collab/users';
 import { useCollabSession } from './collab/useCollabSession';
@@ -54,15 +53,6 @@ function parseBlocks(value) {
     return isBlocknoteDocument(parsed) ? parsed : EMPTY_DOCUMENT;
   } catch {
     return EMPTY_DOCUMENT;
-  }
-}
-
-function parseJsonAttribute(value) {
-  if (!value || !value.trim()) return undefined;
-  try {
-    return JSON.parse(value);
-  } catch {
-    return undefined;
   }
 }
 
@@ -214,7 +204,6 @@ function ProseEditor({
   onReady,
   roomId,
   user,
-  missingTeeth,
 }) {
   const editor = roomId ? (
     <CollabProseEditor
@@ -238,9 +227,7 @@ function ProseEditor({
     />
   );
 
-  return (
-    <MissingTeethProvider teeth={missingTeeth}>{editor}</MissingTeethProvider>
-  );
+  return editor;
 }
 
 export default class TextEditor {
@@ -300,12 +287,6 @@ export default class TextEditor {
     return resolveUser(this.target.dataset.userId);
   }
 
-  get missingTeeth() {
-    if (Array.isArray(this.props.missingTeeth)) return this.props.missingTeeth;
-    const parsed = parseJsonAttribute(this.target.dataset.missingTeeth || '');
-    return Array.isArray(parsed) ? parsed : undefined;
-  }
-
   parseInitialBlocks() {
     if (isBlocknoteDocument(this.props.initialBlocks)) {
       return this.props.initialBlocks;
@@ -340,7 +321,6 @@ export default class TextEditor {
         onReady={this.handleReady}
         roomId={this.roomId}
         user={this.user || DEFAULT_USER}
-        missingTeeth={this.missingTeeth}
       />,
     );
   }

@@ -2,7 +2,6 @@ import {
   createReactBlockSpec,
   type ReactCustomBlockRenderProps,
 } from "@blocknote/react";
-import { useMissingTeeth } from "./MissingTeeth";
 import "./toothChart.css";
 
 export const TOOTH_COUNT = 32;
@@ -56,10 +55,11 @@ const QUADRANTS = [
   ],
 ] as const;
 
-type ToothState = "0" | "1" | "2";
+type ToothState = "0" | "1" | "2" | "3";
 
 const NEXT_STATE: Record<ToothState, ToothState> = {
-  "0": "1",
+  "0": "3",
+  "3": "1",
   "1": "2",
   "2": "0",
 };
@@ -68,18 +68,21 @@ const STATE_LABEL: Record<ToothState, string> = {
   "0": "empty",
   "1": "warning",
   "2": "danger",
+  "3": "missing",
 };
 
 function normalizeTeeth(value: string): string {
   const chars = value.padEnd(TOOTH_COUNT, "0").slice(0, TOOTH_COUNT).split("");
   return chars
-    .map((char) => (char === "1" || char === "2" ? char : "0"))
+    .map((char) =>
+      char === "1" || char === "2" || char === "3" ? char : "0",
+    )
     .join("");
 }
 
 function toothStateAt(teeth: string, index: number): ToothState {
   const char = teeth[index];
-  return char === "1" || char === "2" ? char : "0";
+  return char === "1" || char === "2" || char === "3" ? char : "0";
 }
 
 const toothChartConfig = {
@@ -96,7 +99,6 @@ function ToothChartView(
   props: ReactCustomBlockRenderProps<typeof toothChartConfig>,
 ) {
   const teeth = normalizeTeeth(props.block.props.teeth);
-  const missingTeeth = useMissingTeeth();
 
   const cycle = (index: number) => {
     if (!props.editor.isEditable) {
@@ -113,18 +115,25 @@ function ToothChartView(
   };
 
   return (
-    <div className="tooth-chart" contentEditable={false}>
+    <div
+      className={
+        props.editor.isEditable
+          ? "tooth-chart"
+          : "tooth-chart tooth-chart--readonly"
+      }
+      contentEditable={false}
+    >
       {QUADRANTS.map((quadrant, quadrantIndex) => (
         <div key={quadrantIndex} className="tooth-chart__quadrant">
           {quadrant.map((tooth, toothIndex) => {
             const index = quadrantIndex * 8 + toothIndex;
             const state = toothStateAt(teeth, index);
-            const missingHint = state === "0" && missingTeeth.has(tooth.fdi);
+            const missing = state === "3";
             const className = [
               "tooth-chart__cell",
               state === "1" ? "tooth-chart__cell--warning" : "",
               state === "2" ? "tooth-chart__cell--danger" : "",
-              missingHint ? "tooth-chart__cell--missing" : "",
+              missing ? "tooth-chart__cell--missing" : "",
             ]
               .filter(Boolean)
               .join(" ");
@@ -135,20 +144,12 @@ function ToothChartView(
                 type="button"
                 className={className}
                 data-state={state}
-                aria-label={
-                  missingHint
-                    ? `Tooth ${tooth.fdi} missing`
-                    : `Tooth ${tooth.fdi}, ${STATE_LABEL[state]}`
-                }
-                title={
-                  missingHint
-                    ? `${tooth.fdi} missing`
-                    : `${tooth.fdi} (${STATE_LABEL[state]})`
-                }
+                aria-label={`Tooth ${tooth.fdi}, ${STATE_LABEL[state]}`}
+                title={`${tooth.fdi} (${STATE_LABEL[state]})`}
                 onMouseDown={(event) => event.preventDefault()}
                 onClick={() => cycle(index)}
               >
-                {missingHint ? "×" : tooth.pos}
+                {missing ? "×" : tooth.pos}
               </button>
             );
           })}

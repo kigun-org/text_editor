@@ -10,14 +10,12 @@ type AppProps = {
   page: "index" | "dental";
   defaultRoomId: string;
   initialContent: PartialBlock[];
-  missingTeeth?: number[];
 };
 
 export function App({
   page,
   defaultRoomId,
   initialContent,
-  missingTeeth,
 }: AppProps) {
   const hostRef = useRef<HTMLDivElement | null>(null);
   const editorRef = useRef<TextEditor | null>(null);
@@ -43,7 +41,6 @@ export function App({
         initialBlocks: initialContent,
         roomId,
         user,
-        missingTeeth,
         saveUrl: "/demo-save",
         onChange: (blocks: unknown[]) => {
           setDocument(blocks);
@@ -62,7 +59,7 @@ export function App({
       editor.$destroy();
       editorRef.current = null;
     };
-  }, [roomId, user, initialContent, missingTeeth]);
+  }, [roomId, user, initialContent]);
 
   void historyTick;
   const canUndo = editorRef.current?.canUndo() ?? false;

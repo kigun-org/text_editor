@@ -9,6 +9,5 @@ mountApp(
     page="dental"
     defaultRoomId={DENTAL_ROOM_ID}
     initialContent={odtpTemplate as PartialBlock[]}
-    missingTeeth={[18, 37]}
   />,
 );
