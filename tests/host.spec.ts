@@ -39,3 +39,48 @@ test('mounts BlockNote on the data-blocknote host and saves through up.request',
   expect(save.url).toBe('/demo-save');
   expect(save.notes).toContain('typed from the host test');
 });
+
+test('slash menu keeps Heading only and puts Dental last', async ({ page }) => {
+  await page.goto('/');
+
+  const editor = page.locator('[data-blocknote] .bn-editor');
+  await expect(editor).toBeVisible();
+  await editor.locator('p').last().click();
+  await page.keyboard.press('End');
+  await page.keyboard.press('Enter');
+  await page.keyboard.type('/');
+
+  const menu = page.locator('.bn-suggestion-menu');
+  await expect(menu).toBeVisible();
+
+  const titles = menu.locator('.bn-mt-suggestion-menu-item-title');
+  await expect(titles.filter({ hasText: 'Heading' })).toHaveCount(1);
+  await expect(titles.filter({ hasText: 'Heading 2' })).toHaveCount(0);
+  await expect(titles.filter({ hasText: 'Toggle List' })).toHaveCount(0);
+  await expect(titles.filter({ hasText: 'Emoji' })).toHaveCount(0);
+
+  const labels = menu.locator('.bn-suggestion-menu-label');
+  await expect(labels.last()).toHaveText('Dental');
+  await expect(titles.last()).toHaveText('Tooth chart');
+});
+
+test('editor headings use H3 size', async ({ page }) => {
+  await page.goto('/');
+
+  const editor = page.locator('[data-blocknote] .bn-editor');
+  await expect(editor).toBeVisible();
+
+  const headingSize = await editor
+    .locator('[data-content-type="heading"]')
+    .first()
+    .evaluate((el) => getComputedStyle(el).fontSize);
+  expect(headingSize).toBe('20.8px');
+});
+
+test('dental template still renders existing subheadings', async ({ page }) => {
+  await page.goto('/dental.html');
+
+  const editor = page.locator('[data-blocknote] .bn-editor');
+  await expect(editor).toBeVisible();
+  await expect(editor.locator('h2').first()).toBeVisible();
+});

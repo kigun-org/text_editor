@@ -51,3 +51,13 @@
   color: var(--tblr-secondary, #667085);
   font-size: 0.9rem;
 }
+
+[data-blocknote] [data-content-type="heading"],
+[data-blocknote] [data-content-type="heading"][data-level] {
+  --level: 1.3em;
+}
+
+[data-blocknote] [data-prev-level="1"],
+[data-blocknote] [data-prev-level="2"] {
+  --prev-level: 1.3em;
+}

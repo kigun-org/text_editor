@@ -2,8 +2,12 @@ import { useMemo, useEffect } from 'react';
 import { filterSuggestionItems } from '@blocknote/core';
 import { withCollaboration } from '@blocknote/core/yjs';
 import {
+  FormattingToolbar,
+  FormattingToolbarController,
   SuggestionMenuController,
+  blockTypeSelectItems,
   getDefaultReactSlashMenuItems,
+  useBlockNoteEditor,
   useCreateBlockNote,
 } from '@blocknote/react';
 import { BlockNoteView } from '@blocknote/mantine';
@@ -24,6 +28,50 @@ import './overrides.css';
 
 const EMPTY_DOCUMENT = [{ type: 'paragraph' }];
 const SAVE_DEBOUNCE_MS = 1500;
+const HIDDEN_SLASH_KEYS = new Set([
+  'heading_2',
+  'heading_3',
+  'heading_4',
+  'heading_5',
+  'heading_6',
+  'toggle_heading',
+  'toggle_heading_2',
+  'toggle_heading_3',
+  'toggle_list',
+  'emoji',
+]);
+
+function getEditorSlashMenuItems(editor) {
+  const defaults = getDefaultReactSlashMenuItems(editor)
+    .filter((item) => !HIDDEN_SLASH_KEYS.has(item.key))
+    .map((item) =>
+      item.key === 'heading' ? { ...item, title: 'Heading' } : item,
+    );
+  return [...defaults, insertToothChartItem(editor)];
+}
+
+function getEditorBlockTypeSelectItems(editor) {
+  return blockTypeSelectItems(editor.dictionary)
+    .filter((item) => {
+      if (item.type === 'heading') {
+        return item.props?.level === 1 && !item.props?.isToggleable;
+      }
+      return item.type !== 'toggleListItem';
+    })
+    .map((item) =>
+      item.type === 'heading' ? { ...item, name: 'Heading' } : item,
+    );
+}
+
+function EditorFormattingToolbar() {
+  const editor = useBlockNoteEditor();
+  const items = useMemo(
+    () => getEditorBlockTypeSelectItems(editor),
+    [editor],
+  );
+  return <FormattingToolbar blockTypeSelectItems={items} />;
+}
+
 const STATUS_CLASSES = {
   default: '',
   stale: 'border-warning',
@@ -78,10 +126,7 @@ function useEditorLifecycle(editor, editorRef, onChange, onReady) {
 function EditorView({ editor, theme, editable }) {
   const getSlashMenuItems = useMemo(
     () => async (query) =>
-      filterSuggestionItems(
-        [insertToothChartItem(editor), ...getDefaultReactSlashMenuItems(editor)],
-        query,
-      ),
+      filterSuggestionItems(getEditorSlashMenuItems(editor), query),
     [editor],
   );
 
@@ -90,15 +135,21 @@ function EditorView({ editor, theme, editable }) {
       editor={editor}
       theme={theme}
       editable={editable}
-      formattingToolbar={editable}
+      formattingToolbar={false}
       slashMenu={false}
+      emojiPicker={false}
       sideMenu={editable}
     >
       {editable ? (
-        <SuggestionMenuController
-          triggerCharacter="/"
-          getItems={getSlashMenuItems}
-        />
+        <>
+          <FormattingToolbarController
+            formattingToolbar={EditorFormattingToolbar}
+          />
+          <SuggestionMenuController
+            triggerCharacter="/"
+            getItems={getSlashMenuItems}
+          />
+        </>
       ) : null}
     </BlockNoteView>
   );
