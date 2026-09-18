@@ -1,10 +1,17 @@
-import { useEffect, useRef, useState } from "react";
+import {
+  memo,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type Ref,
+} from "react";
 import type { PartialBlock } from "@blocknote/core";
 import {
   COLLAB_USERS,
   type CollabUser,
 } from "../collab/users";
-import TextEditor from "../text-editor.jsx";
+import type TextEditorElement from "../text-editor.jsx";
 
 type AppProps = {
   page: "index" | "dental";
@@ -12,54 +19,72 @@ type AppProps = {
   initialContent: PartialBlock[];
 };
 
+const EditorHost = memo(function EditorHost({
+  notes,
+  roomId,
+  userId,
+  galleryUrl,
+  editorRef,
+}: {
+  notes: string;
+  roomId: string;
+  userId: string;
+  galleryUrl?: string;
+  editorRef: Ref<TextEditorElement>;
+}) {
+  return (
+    <text-editor
+      ref={editorRef}
+      className="editor-shell"
+      update-url="/demo-save"
+      gallery-url={galleryUrl}
+      data-room-id={roomId}
+      data-user-id={userId}
+    >
+      <textarea name="notes" defaultValue={notes} readOnly />
+    </text-editor>
+  );
+});
+
 export function App({
   page,
   defaultRoomId,
   initialContent,
 }: AppProps) {
-  const hostRef = useRef<HTMLDivElement | null>(null);
-  const editorRef = useRef<TextEditor | null>(null);
-  const [roomId, setRoomId] = useState(defaultRoomId);
-  const [roomDraft, setRoomDraft] = useState(defaultRoomId);
+  const editorRef = useRef<TextEditorElement | null>(null);
+  const search = new URLSearchParams(window.location.search);
+  const [roomId, setRoomId] = useState(
+    () => search.get("room") || defaultRoomId,
+  );
+  const [roomDraft, setRoomDraft] = useState(roomId);
   const [user, setUser] = useState<CollabUser>(COLLAB_USERS[0]);
   const [document, setDocument] = useState<unknown[] | null>(null);
   const [historyTick, setHistoryTick] = useState(0);
+  const galleryUrl = search.get("gallery") || undefined;
+  const notes = useMemo(
+    () => JSON.stringify(initialContent),
+    [initialContent],
+  );
 
   useEffect(() => {
     setRoomDraft(roomId);
   }, [roomId]);
 
   useEffect(() => {
-    const host = hostRef.current;
-    if (!host) {
-      return;
-    }
+    const editor = editorRef.current;
+    if (!editor) return;
 
-    const editor = new TextEditor({
-      target: host,
-      props: {
-        initialBlocks: initialContent,
-        roomId,
-        user,
-        saveUrl: "/demo-save",
-        onChange: (blocks: unknown[]) => {
-          setDocument(blocks);
-          setHistoryTick((tick) => tick + 1);
-        },
-        onReady: (instance: TextEditor) => {
-          editorRef.current = instance;
-          setDocument(instance.document ?? null);
-          setHistoryTick((tick) => tick + 1);
-        },
-      },
-    });
-    editorRef.current = editor;
-
-    return () => {
-      editor.$destroy();
-      editorRef.current = null;
+    const sync = () => {
+      setDocument(editor.document ?? null);
+      setHistoryTick((tick) => tick + 1);
     };
-  }, [roomId, user, initialContent]);
+    editor.addEventListener("save", sync);
+    const ready = window.setTimeout(sync, 100);
+    return () => {
+      editor.removeEventListener("save", sync);
+      window.clearTimeout(ready);
+    };
+  }, [roomId, user]);
 
   void historyTick;
   const canUndo = editorRef.current?.canUndo() ?? false;
@@ -160,17 +185,13 @@ export function App({
         </p>
       </header>
 
-      <div
-        ref={hostRef}
-        className="editor-shell text-editor"
-        data-blocknote
-        data-gallery={
-          new URLSearchParams(window.location.search).get("gallery") ||
-          undefined
-        }
-      >
-        <textarea name="notes" defaultValue="" readOnly />
-      </div>
+      <EditorHost
+        notes={notes}
+        roomId={roomId}
+        userId={user.id}
+        galleryUrl={galleryUrl}
+        editorRef={editorRef}
+      />
 
       <section className="code-panel" aria-label="Editor document JSON">
         <header className="code-panel__header">

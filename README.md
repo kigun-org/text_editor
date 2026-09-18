@@ -3,8 +3,18 @@
 BlockNote text editor used by Portfolio (and other front-end projects).
 Build output is a pair of JS+CSS files, same pattern as `image-editor`.
 
-The editor includes a custom tooth-chart block and optional Yjs collaboration
-(same-browser tabs via y-webrtc when `roomId` / `data-room-id` is set).
+Importing the bundle defines `<text-editor>` (`shadowRoot` is null). The
+document lives in a child `textarea`. Editable hosts listen for a bubbling
+`save` event (`detail` is the notes JSON string) and persist themselves.
+
+```html
+<text-editor update-url="/notes" gallery-url="/42/images">
+  <textarea name="notes">[{"type":"paragraph"}]</textarea>
+</text-editor>
+```
+
+`readonly` disables editing and save. Optional `data-room-id` / `data-user-id`
+enable same-browser y-webrtc collaboration.
 
 ```
 pnpm install

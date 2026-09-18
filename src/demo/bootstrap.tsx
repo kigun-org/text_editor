@@ -1,9 +1,7 @@
 import { StrictMode, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
-import { installMockUnpoly } from "./saveDocument";
+import "../text-editor.jsx";
 import "./app.css";
-
-installMockUnpoly();
 
 export function mountApp(node: ReactNode) {
   const root = document.getElementById("root");

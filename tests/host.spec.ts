@@ -1,51 +1,57 @@
 import { expect, test, type Page } from '@playwright/test';
 
-async function stubSave(page: Page) {
-  await page.evaluate(() => {
-    const saves: { url: string; notes?: string }[] = [];
-    Object.defineProperty(window, '__saves', { value: saves, writable: true });
-    const up = (window as Window & { up?: { request?: unknown } }).up ?? {};
-    up.request = async (url: string, options?: { params?: { notes?: string } }) => {
-      saves.push({ url, notes: options?.params?.notes });
-    };
-    (window as Window & { up: typeof up }).up = up;
-  });
-}
+const editor = (page: Page) => page.locator('text-editor .bn-editor');
 
-test('mounts BlockNote on the data-blocknote host and saves through up.request', async ({
+test('defines a text-editor custom element without a shadow root', async ({
   page,
 }) => {
   await page.goto('/');
 
-  const editor = page.locator('[data-blocknote] .bn-editor');
-  await expect(editor).toBeVisible();
-  await expect(editor).toContainText('Patient note');
+  await expect
+    .poll(() => page.evaluate(() => customElements.get('text-editor') != null))
+    .toBe(true);
+  const host = page.locator('text-editor');
+  await expect(host).toBeVisible();
+  expect(await host.evaluate((el) => el.shadowRoot)).toBeNull();
+});
 
-  await stubSave(page);
+test('mounts BlockNote and emits a bubbling save event', async ({ page }) => {
+  await page.addInitScript(() => {
+    const saves: string[] = [];
+    Object.defineProperty(window, '__saves', { value: saves, writable: true });
+    document.addEventListener('save', (event) => {
+      if ((event.target as HTMLElement | null)?.localName !== 'text-editor') {
+        return;
+      }
+      saves.push((event as CustomEvent<string>).detail);
+    });
+  });
 
-  await editor.click();
+  await page.goto('/?room=host-save');
+
+  await expect(editor(page)).toBeVisible();
+  await expect(editor(page)).toContainText('Patient note');
+
+  await editor(page).locator('p').last().click();
   await page.keyboard.press('End');
   await page.keyboard.type(' typed from the host test');
+  await expect(editor(page)).toContainText('typed from the host test');
 
   await expect
-    .poll(async () => page.evaluate(() => (window as unknown as { __saves: unknown[] }).__saves?.length ?? 0), {
-      timeout: 8_000,
-    })
-    .toBeGreaterThan(0);
-
-  const save = await page.evaluate(
-    () => (window as unknown as { __saves: { url: string; notes?: string }[] }).__saves[0],
-  );
-  expect(save.url).toBe('/demo-save');
-  expect(save.notes).toContain('typed from the host test');
+    .poll(async () => {
+      const saves = await page.evaluate(
+        () => (window as unknown as { __saves?: string[] }).__saves ?? [],
+      );
+      return saves.some((notes) => notes.includes('typed from the host test'));
+    }, { timeout: 8_000 })
+    .toBe(true);
 });
 
 test('slash menu keeps Heading only and puts Dental last', async ({ page }) => {
   await page.goto('/');
 
-  const editor = page.locator('[data-blocknote] .bn-editor');
-  await expect(editor).toBeVisible();
-  await editor.locator('p').last().click();
+  await expect(editor(page)).toBeVisible();
+  await editor(page).locator('p').last().click();
   await page.keyboard.press('End');
   await page.keyboard.press('Enter');
   await page.keyboard.type('/');
@@ -70,10 +76,9 @@ test('slash menu keeps Heading only and puts Dental last', async ({ page }) => {
 test('editor headings use H3 size', async ({ page }) => {
   await page.goto('/');
 
-  const editor = page.locator('[data-blocknote] .bn-editor');
-  await expect(editor).toBeVisible();
+  await expect(editor(page)).toBeVisible();
 
-  const headingSize = await editor
+  const headingSize = await editor(page)
     .locator('[data-content-type="heading"]')
     .first()
     .evaluate((el) => getComputedStyle(el).fontSize);
@@ -104,9 +109,8 @@ test('image file panel has a gallery tab that inserts from the JSON list', async
 
   await page.goto('/');
 
-  const editor = page.locator('[data-blocknote] .bn-editor');
-  await expect(editor).toBeVisible();
-  await editor.locator('p').last().click();
+  await expect(editor(page)).toBeVisible();
+  await editor(page).locator('p').last().click();
   await page.keyboard.press('End');
   await page.keyboard.press('Enter');
   await page.keyboard.type('/image');
@@ -119,17 +123,17 @@ test('image file panel has a gallery tab that inserts from the JSON list', async
   const galleryItem = panel.locator('.image-gallery__item').first();
   await expect(galleryItem).toBeVisible();
   await expect(galleryItem).toHaveCSS('height', '150px');
-  const editorWidth = await editor.evaluate((el) => el.getBoundingClientRect().width);
+  const editorWidth = await editor(page).evaluate((el) => el.getBoundingClientRect().width);
   const panelWidth = await panel.evaluate((el) => el.getBoundingClientRect().width);
   expect(Math.abs(panelWidth - editorWidth * 0.9)).toBeLessThan(8);
 
   await galleryItem.click();
 
-  await expect(editor.locator('img').first()).toBeVisible();
+  await expect(editor(page).locator('img').first()).toBeVisible();
   await expect(panel).toBeHidden();
 });
 
-test('image gallery fetches the host data-gallery URL', async ({ page }) => {
+test('image gallery fetches the host gallery-url', async ({ page }) => {
   const pixel =
     'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
   await page.route('**/42/images', (route) => {
@@ -151,9 +155,8 @@ test('image gallery fetches the host data-gallery URL', async ({ page }) => {
 
   await page.goto('/?gallery=/42/images');
 
-  const editor = page.locator('[data-blocknote] .bn-editor');
-  await expect(editor).toBeVisible();
-  await editor.locator('p').last().click();
+  await expect(editor(page)).toBeVisible();
+  await editor(page).locator('p').last().click();
   await page.keyboard.press('End');
   await page.keyboard.press('Enter');
   await page.keyboard.type('/image');
@@ -162,13 +165,12 @@ test('image gallery fetches the host data-gallery URL', async ({ page }) => {
   const panel = page.locator('.bn-panel');
   await expect(panel.getByRole('heading', { name: 'Visit one' })).toBeVisible();
   await panel.locator('.image-gallery__item').first().click();
-  await expect(editor.locator('img').first()).toBeVisible();
+  await expect(editor(page).locator('img').first()).toBeVisible();
 });
 
 test('dental template still renders existing subheadings', async ({ page }) => {
   await page.goto('/dental.html');
 
-  const editor = page.locator('[data-blocknote] .bn-editor');
-  await expect(editor).toBeVisible();
-  await expect(editor.locator('h2').first()).toBeVisible();
+  await expect(editor(page)).toBeVisible();
+  await expect(editor(page).locator('h2').first()).toBeVisible();
 });

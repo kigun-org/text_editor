@@ -1,17 +1,20 @@
+import type { DetailedHTMLProps, HTMLAttributes } from "react";
+
 export {};
 
-declare global {
-  // eslint-disable-next-line no-var
-  var up:
-    | {
-        Response: new (status: number, text: string) => Error & {
-          status: number;
-          text: string;
-        };
-        request: (
-          url: string,
-          options?: { method?: string; params?: Record<string, string> },
-        ) => Promise<void>;
-      }
-    | undefined;
+declare module "react" {
+  namespace JSX {
+    interface IntrinsicElements {
+      "text-editor": DetailedHTMLProps<
+        HTMLAttributes<HTMLElement>,
+        HTMLElement
+      > & {
+        readonly?: boolean;
+        "update-url"?: string;
+        "gallery-url"?: string;
+        "data-room-id"?: string;
+        "data-user-id"?: string;
+      };
+    }
+  }
 }
