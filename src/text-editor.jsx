@@ -45,15 +45,60 @@ const HIDDEN_SLASH_KEYS = new Set([
   'toggle_heading_3',
   'toggle_list',
   'emoji',
+  'video',
+  'audio',
+  'file',
+  'code_block',
 ]);
 
+const FIRST_SLASH_GROUP = [
+  'heading',
+  'paragraph',
+  'numbered_list',
+  'bullet_list',
+  'check_list',
+  'table',
+  'quote',
+  'divider',
+];
+
+function compactSlashItem(item, extra = {}) {
+  return {
+    ...item,
+    ...extra,
+    size: 'small',
+    subtext: undefined,
+  };
+}
+
 function getEditorSlashMenuItems(editor) {
-  const defaults = getDefaultReactSlashMenuItems(editor)
-    .filter((item) => !HIDDEN_SLASH_KEYS.has(item.key))
-    .map((item) =>
-      item.key === 'heading' ? { ...item, title: 'Heading' } : item,
-    );
-  return [...defaults, insertToothChartItem(editor)];
+  const byKey = new Map(
+    getDefaultReactSlashMenuItems(editor)
+      .filter((item) => !HIDDEN_SLASH_KEYS.has(item.key))
+      .map((item) => [item.key, item]),
+  );
+  const used = new Set(FIRST_SLASH_GROUP);
+  const firstGroup = FIRST_SLASH_GROUP.flatMap((key) => {
+    const item = byKey.get(key);
+    if (!item) return [];
+    return [
+      compactSlashItem(item, {
+        group: undefined,
+        title: key === 'heading' ? 'Heading' : item.title,
+      }),
+    ];
+  });
+  const image = byKey.get('image');
+  if (image) used.add('image');
+  const leftovers = [...byKey.values()]
+    .filter((item) => !used.has(item.key))
+    .map((item) => compactSlashItem(item, { group: undefined }));
+  return [
+    ...firstGroup,
+    ...(image ? [compactSlashItem(image)] : []),
+    ...leftovers,
+    compactSlashItem(insertToothChartItem(editor)),
+  ];
 }
 
 function getEditorBlockTypeSelectItems(editor) {
@@ -150,6 +195,7 @@ function EditorView({ editor, theme, editable }) {
       filePanel={false}
       emojiPicker={false}
       sideMenu={editable}
+      portalElements={{ default: null }}
     >
       {editable ? (
         <>

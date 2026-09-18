@@ -146,12 +146,31 @@ export function GalleryPicker({
   );
 }
 
+const DEFAULT_IMAGE_WIDTH_CH = 65;
+
+export function measureChWidth(
+  element: Element | null | undefined,
+  ch = DEFAULT_IMAGE_WIDTH_CH,
+): number {
+  if (!element) return Math.round(8 * ch);
+  const probe = document.createElement("span");
+  probe.setAttribute("aria-hidden", "true");
+  probe.style.cssText =
+    "position:absolute;left:-9999px;top:0;visibility:hidden;white-space:pre;font:inherit;pointer-events:none;";
+  probe.textContent = "0".repeat(ch);
+  element.appendChild(probe);
+  const width = Math.round(probe.getBoundingClientRect().width);
+  probe.remove();
+  return width || Math.round(8 * ch);
+}
+
 export function applyGalleryImage(
   editor: {
     getBlock: (id: string) => unknown;
+    domElement?: HTMLElement | null;
     updateBlock: (
       id: string,
-      update: { props: { name: string; url: string } },
+      update: { props: { name: string; url: string; previewWidth: number } },
     ) => void;
   },
   blockId: string,
@@ -164,6 +183,7 @@ export function applyGalleryImage(
         image.alt ||
         (image.id != null ? String(image.id) : filenameFromURL(image.url)),
       url: image.url,
+      previewWidth: measureChWidth(editor.domElement, DEFAULT_IMAGE_WIDTH_CH),
     },
   });
 }

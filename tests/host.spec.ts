@@ -47,7 +47,7 @@ test('mounts BlockNote and emits a bubbling save event', async ({ page }) => {
     .toBe(true);
 });
 
-test('slash menu keeps Heading only and puts Dental last', async ({ page }) => {
+test('slash menu keeps Heading only and puts Other last', async ({ page }) => {
   await page.goto('/');
 
   await expect(editor(page)).toBeVisible();
@@ -64,13 +64,66 @@ test('slash menu keeps Heading only and puts Dental last', async ({ page }) => {
   await expect(titles.filter({ hasText: 'Heading 2' })).toHaveCount(0);
   await expect(titles.filter({ hasText: 'Toggle List' })).toHaveCount(0);
   await expect(titles.filter({ hasText: 'Emoji' })).toHaveCount(0);
+  await expect(titles.filter({ hasText: 'Image' })).toHaveCount(1);
+  await expect(titles.filter({ hasText: 'Video' })).toHaveCount(0);
+  await expect(titles.filter({ hasText: 'Audio' })).toHaveCount(0);
+  await expect(titles.filter({ hasText: 'File' })).toHaveCount(0);
+  await expect(titles.filter({ hasText: 'Code' })).toHaveCount(0);
 
   const labels = menu.locator('.bn-suggestion-menu-label');
-  await expect(labels.last()).toHaveText('Dental');
+  await expect(labels).toHaveCount(2);
+  await expect(labels.first()).toHaveText('Media');
+  await expect(labels.last()).toHaveText('Other');
+  await expect(titles.first()).toHaveText('Heading');
+  await expect(titles.nth(1)).toHaveText('Paragraph');
+  await expect(titles.nth(5)).toHaveText('Table');
+  await expect(titles.nth(-4)).toHaveText('Quote');
+  await expect(titles.nth(-3)).toHaveText('Divider');
+  await expect(titles.nth(-2)).toHaveText('Image');
   await expect(titles.last()).toHaveText('Tooth chart');
+  await expect(menu.locator('.bn-suggestion-menu-item-small')).toHaveCount(
+    await titles.count(),
+  );
+  await expect(
+    menu.locator('.bn-mt-suggestion-menu-item-subtitle').first(),
+  ).toBeHidden();
 
   const toothItem = menu.locator('[role="option"]', { hasText: 'Tooth chart' });
   await expect(toothItem.locator('svg')).toBeVisible();
+});
+
+test('slash menu stacks above a sticky visit title', async ({ page }) => {
+  await page.goto('/');
+  await expect(editor(page)).toBeVisible();
+  await editor(page).locator('p').first().click();
+  await page.keyboard.press('Home');
+  await page.keyboard.type('/');
+
+  const menu = page.locator('.bn-suggestion-menu');
+  await expect(menu).toBeVisible();
+
+  const onTop = await page.evaluate(() => {
+    const menuEl = document.querySelector('.bn-suggestion-menu');
+    if (!menuEl) return false;
+    const box = menuEl.getBoundingClientRect();
+    const bar = document.createElement('div');
+    bar.style.cssText = [
+      'position:fixed',
+      `top:${box.top}px`,
+      `left:${box.left}px`,
+      `width:${box.width}px`,
+      `height:${Math.min(80, box.height)}px`,
+      'z-index:1',
+      'background:red',
+    ].join(';');
+    document.body.append(bar);
+    const x = box.left + box.width / 2;
+    const y = box.top + Math.min(40, box.height / 2);
+    const top = document.elementFromPoint(x, y);
+    bar.remove();
+    return top?.closest('.bn-suggestion-menu') != null;
+  });
+  expect(onTop).toBe(true);
 });
 
 test('editor headings use H3 size', async ({ page }) => {
@@ -129,8 +182,27 @@ test('image file panel has a gallery tab that inserts from the JSON list', async
 
   await galleryItem.click();
 
-  await expect(editor(page).locator('img').first()).toBeVisible();
+  const inserted = editor(page).locator('img').first();
+  await expect(inserted).toBeVisible();
   await expect(panel).toBeHidden();
+  const expectedWidth = await editor(page).evaluate((el) => {
+    const probe = document.createElement('span');
+    probe.style.cssText =
+      'position:absolute;visibility:hidden;white-space:pre;font:inherit;';
+    probe.textContent = '0'.repeat(65);
+    el.appendChild(probe);
+    const width = probe.getBoundingClientRect().width;
+    probe.remove();
+    return width;
+  });
+  const imageWidth = await inserted.evaluate((el) => {
+    const sized =
+      el.closest('[style*="width"]') ??
+      el.parentElement ??
+      el;
+    return sized.getBoundingClientRect().width;
+  });
+  expect(Math.abs(imageWidth - expectedWidth)).toBeLessThan(16);
 });
 
 test('image gallery fetches the host gallery-url', async ({ page }) => {
