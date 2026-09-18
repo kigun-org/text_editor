@@ -7,11 +7,17 @@ import {
   SuggestionMenuController,
   blockTypeSelectItems,
   getDefaultReactSlashMenuItems,
+  getFormattingToolbarItems,
   useBlockNoteEditor,
   useCreateBlockNote,
 } from '@blocknote/react';
 import { BlockNoteView } from '@blocknote/mantine';
 import { createRoot } from 'react-dom/client';
+import {
+  EditorFilePanelController,
+  EditorFileReplaceButton,
+} from './blocks/EditorFilePanel';
+import { GalleryUrlContext } from './blocks/GalleryTab';
 import { insertToothChartItem, schema } from './blocks/schema';
 import { DEFAULT_USER, resolveUser } from './collab/users';
 import { useCollabSession } from './collab/useCollabSession';
@@ -69,7 +75,18 @@ function EditorFormattingToolbar() {
     () => getEditorBlockTypeSelectItems(editor),
     [editor],
   );
-  return <FormattingToolbar blockTypeSelectItems={items} />;
+  const toolbarItems = useMemo(
+    () =>
+      getFormattingToolbarItems(items).map((item) =>
+        item.key === 'replaceFileButton' ? (
+          <EditorFileReplaceButton key="replaceFileButton" />
+        ) : (
+          item
+        ),
+      ),
+    [items],
+  );
+  return <FormattingToolbar>{toolbarItems}</FormattingToolbar>;
 }
 
 const STATUS_CLASSES = {
@@ -137,6 +154,7 @@ function EditorView({ editor, theme, editable }) {
       editable={editable}
       formattingToolbar={false}
       slashMenu={false}
+      filePanel={false}
       emojiPicker={false}
       sideMenu={editable}
     >
@@ -145,6 +163,7 @@ function EditorView({ editor, theme, editable }) {
           <FormattingToolbarController
             formattingToolbar={EditorFormattingToolbar}
           />
+          <EditorFilePanelController />
           <SuggestionMenuController
             triggerCharacter="/"
             getItems={getSlashMenuItems}
@@ -255,6 +274,7 @@ function ProseEditor({
   onReady,
   roomId,
   user,
+  galleryUrl,
 }) {
   const editor = roomId ? (
     <CollabProseEditor
@@ -278,7 +298,11 @@ function ProseEditor({
     />
   );
 
-  return editor;
+  return (
+    <GalleryUrlContext.Provider value={galleryUrl || undefined}>
+      {editor}
+    </GalleryUrlContext.Provider>
+  );
 }
 
 export default class TextEditor {
@@ -315,6 +339,10 @@ export default class TextEditor {
 
   get saveUrl() {
     return this.props.saveUrl || this.target.dataset.updateUrl || '';
+  }
+
+  get galleryUrl() {
+    return this.props.galleryUrl || this.target.dataset.gallery || '';
   }
 
   get inputElement() {
@@ -372,6 +400,7 @@ export default class TextEditor {
         onReady={this.handleReady}
         roomId={this.roomId}
         user={this.user || DEFAULT_USER}
+        galleryUrl={this.galleryUrl}
       />,
     );
   }

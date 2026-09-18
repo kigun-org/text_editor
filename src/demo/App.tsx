@@ -164,6 +164,10 @@ export function App({
         ref={hostRef}
         className="editor-shell text-editor"
         data-blocknote
+        data-gallery={
+          new URLSearchParams(window.location.search).get("gallery") ||
+          undefined
+        }
       >
         <textarea name="notes" defaultValue="" readOnly />
       </div>

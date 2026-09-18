@@ -80,6 +80,91 @@ test('editor headings use H3 size', async ({ page }) => {
   expect(headingSize).toBe('20.8px');
 });
 
+test('image file panel has a gallery tab that inserts from the JSON list', async ({
+  page,
+}) => {
+  const pixel =
+    'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+  await page.route('**/*gallery.json*', (route) => {
+    if (route.request().resourceType() !== 'fetch') {
+      return route.continue();
+    }
+    return route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({
+        visits: [
+          {
+            title: 'Sample',
+            images: [{ id: 1, url: pixel, thumbnail: pixel }],
+          },
+        ],
+      }),
+    });
+  });
+
+  await page.goto('/');
+
+  const editor = page.locator('[data-blocknote] .bn-editor');
+  await expect(editor).toBeVisible();
+  await editor.locator('p').last().click();
+  await page.keyboard.press('End');
+  await page.keyboard.press('Enter');
+  await page.keyboard.type('/image');
+  await page.keyboard.press('Enter');
+
+  const panel = page.locator('.bn-panel');
+  await expect(panel).toBeVisible();
+  await expect(panel.getByRole('tab', { name: 'Embed' })).toHaveCount(0);
+
+  const galleryItem = panel.locator('.image-gallery__item').first();
+  await expect(galleryItem).toBeVisible();
+  await expect(galleryItem).toHaveCSS('height', '150px');
+  const editorWidth = await editor.evaluate((el) => el.getBoundingClientRect().width);
+  const panelWidth = await panel.evaluate((el) => el.getBoundingClientRect().width);
+  expect(Math.abs(panelWidth - editorWidth * 0.9)).toBeLessThan(8);
+
+  await galleryItem.click();
+
+  await expect(editor.locator('img').first()).toBeVisible();
+  await expect(panel).toBeHidden();
+});
+
+test('image gallery fetches the host data-gallery URL', async ({ page }) => {
+  const pixel =
+    'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+  await page.route('**/42/images', (route) => {
+    if (route.request().resourceType() !== 'fetch') {
+      return route.continue();
+    }
+    return route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({
+        visits: [
+          {
+            title: 'Visit one',
+            images: [{ id: 9, url: pixel, thumbnail: pixel }],
+          },
+        ],
+      }),
+    });
+  });
+
+  await page.goto('/?gallery=/42/images');
+
+  const editor = page.locator('[data-blocknote] .bn-editor');
+  await expect(editor).toBeVisible();
+  await editor.locator('p').last().click();
+  await page.keyboard.press('End');
+  await page.keyboard.press('Enter');
+  await page.keyboard.type('/image');
+  await page.keyboard.press('Enter');
+
+  const panel = page.locator('.bn-panel');
+  await expect(panel.getByRole('heading', { name: 'Visit one' })).toBeVisible();
+  await panel.locator('.image-gallery__item').first().click();
+  await expect(editor.locator('img').first()).toBeVisible();
+});
+
 test('dental template still renders existing subheadings', async ({ page }) => {
   await page.goto('/dental.html');
 

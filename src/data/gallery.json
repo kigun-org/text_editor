@@ -1,0 +1,59 @@
+{
+  "visits": [
+    {
+      "title": "Clinic",
+      "images": [
+        {
+          "id": 1,
+          "url": "https://images.unsplash.com/photo-1704455306251-b4634215d98f?auto=format&fit=crop&w=1200&q=80",
+          "thumbnail": "https://images.unsplash.com/photo-1704455306251-b4634215d98f?auto=format&h=300&q=60"
+        },
+        {
+          "id": 2,
+          "url": "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1200&q=80",
+          "thumbnail": "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&h=300&q=60"
+        },
+        {
+          "id": 3,
+          "url": "https://images.unsplash.com/photo-1642844819197-5f5f21b89ff8?auto=format&fit=crop&w=1200&q=80",
+          "thumbnail": "https://images.unsplash.com/photo-1642844819197-5f5f21b89ff8?auto=format&h=300&q=60"
+        },
+        {
+          "id": 4,
+          "url": "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?auto=format&fit=crop&w=1200&q=80",
+          "thumbnail": "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?auto=format&h=300&q=60"
+        },
+        {
+          "id": 5,
+          "url": "https://images.unsplash.com/photo-1728342057953-94bfad8f0e7e?auto=format&fit=crop&w=1200&q=80",
+          "thumbnail": "https://images.unsplash.com/photo-1728342057953-94bfad8f0e7e?auto=format&h=300&q=60"
+        },
+        {
+          "id": 6,
+          "url": "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=1200&q=80",
+          "thumbnail": "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&h=300&q=60"
+        }
+      ]
+    },
+    {
+      "title": "Oral care",
+      "images": [
+        {
+          "id": 7,
+          "url": "https://images.unsplash.com/photo-1609840113564-ab4aba4956c4?auto=format&fit=crop&w=1200&q=80",
+          "thumbnail": "https://images.unsplash.com/photo-1609840113564-ab4aba4956c4?auto=format&h=300&q=60"
+        },
+        {
+          "id": 8,
+          "url": "https://images.unsplash.com/photo-1489278353717-f64c6ee8a4d2?auto=format&fit=crop&w=1200&q=80",
+          "thumbnail": "https://images.unsplash.com/photo-1489278353717-f64c6ee8a4d2?auto=format&h=300&q=60"
+        },
+        {
+          "id": 9,
+          "url": "https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?auto=format&fit=crop&w=1200&q=80",
+          "thumbnail": "https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?auto=format&h=300&q=60"
+        }
+      ]
+    }
+  ]
+}
