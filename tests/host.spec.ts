@@ -62,6 +62,9 @@ test('slash menu keeps Heading only and puts Dental last', async ({ page }) => {
   const labels = menu.locator('.bn-suggestion-menu-label');
   await expect(labels.last()).toHaveText('Dental');
   await expect(titles.last()).toHaveText('Tooth chart');
+
+  const toothItem = menu.locator('[role="option"]', { hasText: 'Tooth chart' });
+  await expect(toothItem.locator('svg')).toBeVisible();
 });
 
 test('editor headings use H3 size', async ({ page }) => {

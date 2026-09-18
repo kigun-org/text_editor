@@ -2,7 +2,8 @@ import {
   BlockNoteSchema,
   insertOrUpdateBlockForSlashMenu,
 } from "@blocknote/core";
-import { createToothChart } from "./ToothChart";
+import { createElement } from "react";
+import { createToothChart, ToothIcon } from "./ToothChart";
 
 export const schema = BlockNoteSchema.create().extend({
   blockSpecs: {
@@ -18,6 +19,7 @@ export function insertToothChartItem(editor: EditorType) {
     subtext: "FDI chart with empty / missing / warning / error states",
     group: "Dental",
     aliases: ["tooth", "teeth", "chart", "dental", "odontogram"],
+    icon: createElement(ToothIcon, { size: 18 }),
     onItemClick: () => {
       insertOrUpdateBlockForSlashMenu(editor, {
         type: "toothChart",
