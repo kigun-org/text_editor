@@ -71,9 +71,8 @@ test('slash menu keeps Heading only and puts Other last', async ({ page }) => {
   await expect(titles.filter({ hasText: 'Code' })).toHaveCount(0);
 
   const labels = menu.locator('.bn-suggestion-menu-label');
-  await expect(labels).toHaveCount(2);
-  await expect(labels.first()).toHaveText('Media');
-  await expect(labels.last()).toHaveText('Other');
+  await expect(labels).toHaveCount(1);
+  await expect(labels.first()).toHaveText('Other');
   await expect(titles.first()).toHaveText('Heading');
   await expect(titles.nth(1)).toHaveText('Paragraph');
   await expect(titles.nth(5)).toHaveText('Table');
@@ -81,9 +80,7 @@ test('slash menu keeps Heading only and puts Other last', async ({ page }) => {
   await expect(titles.nth(-3)).toHaveText('Divider');
   await expect(titles.nth(-2)).toHaveText('Image');
   await expect(titles.last()).toHaveText('Tooth chart');
-  await expect(menu.locator('.bn-suggestion-menu-item-small')).toHaveCount(
-    await titles.count(),
-  );
+  await expect(menu.locator('.bn-suggestion-menu-item-small')).toHaveCount(0);
   await expect(
     menu.locator('.bn-mt-suggestion-menu-item-subtitle').first(),
   ).toBeHidden();

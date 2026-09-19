@@ -2,6 +2,19 @@ text-editor {
   display: block;
   min-width: 0;
   width: 100%;
+  --bn-font-family: var(--tblr-font-sans-serif, "Noto Sans", sans-serif);
+}
+
+text-editor .bn-root {
+  --bn-font-family: var(--tblr-font-sans-serif, "Noto Sans", sans-serif);
+}
+
+text-editor .bn-root,
+text-editor .bn-container,
+text-editor .bn-editor,
+text-editor .bn-default-styles,
+text-editor .bn-mantine {
+  font-family: var(--bn-font-family);
 }
 
 text-editor:not([readonly]) {
@@ -61,4 +74,20 @@ text-editor [data-content-type="heading"][data-level] {
 text-editor [data-prev-level="1"],
 text-editor [data-prev-level="2"] {
   --prev-level: 1.3em;
+}
+
+.bn-mantine .bn-suggestion-menu-item:not(.bn-suggestion-menu-item-small) {
+  min-height: unset;
+  padding-block: 0.35rem;
+}
+
+.bn-mantine
+  .bn-suggestion-menu-item
+  .bn-mt-suggestion-menu-item-section[data-position="left"] {
+  padding: 0.2rem;
+}
+
+text-editor [data-file-block] .bn-visual-media,
+text-editor [data-content-type="image"] img {
+  border-radius: 0;
 }

@@ -66,7 +66,7 @@ function compactSlashItem(item, extra = {}) {
   return {
     ...item,
     ...extra,
-    size: 'small',
+    size: 'default',
     subtext: undefined,
   };
 }
@@ -95,8 +95,10 @@ function getEditorSlashMenuItems(editor) {
     .map((item) => compactSlashItem(item, { group: undefined }));
   return [
     ...firstGroup,
-    ...(image ? [compactSlashItem(image)] : []),
     ...leftovers,
+    ...(image
+      ? [compactSlashItem(image, { group: 'Other' })]
+      : []),
     compactSlashItem(insertToothChartItem(editor)),
   ];
 }

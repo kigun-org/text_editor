@@ -5,7 +5,7 @@
 }
 
 :root {
-  --app-font-family: system-ui, sans-serif;
+  --app-font-family: var(--tblr-font-sans-serif, "Noto Sans", sans-serif);
   --bn-font-family: var(--app-font-family);
 }
 
