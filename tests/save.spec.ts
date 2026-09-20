@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { gotoHost, saves, textarea, typeAtEnd } from './helpers';
+import { editor, gotoHost, inputs, saves, textarea, typeAtEnd } from './helpers';
 
 test('keystrokes sync the textarea immediately', async ({ page }) => {
   await gotoHost(page);
@@ -9,6 +9,28 @@ test('keystrokes sync the textarea immediately', async ({ page }) => {
   const blocks = JSON.parse(value);
   expect(Array.isArray(blocks)).toBe(true);
   expect(blocks.every((b: { type?: string }) => typeof b.type === 'string')).toBe(true);
+});
+
+test('each edit dispatches a bubbling input event before the debounced save', async ({ page }) => {
+  await gotoHost(page);
+  expect(await inputs(page)).toEqual([]);
+
+  await typeAtEnd(page, ' stale');
+  const seen = await inputs(page);
+  expect(seen.length).toBeGreaterThan(0);
+  expect(new Set(seen)).toEqual(new Set(['editable']));
+  // No save yet: the host can show "stale" before anything is persisted.
+  expect(await saves(page)).toEqual([]);
+
+  await expect.poll(async () => (await saves(page)).length, { timeout: 3000 }).toBe(1);
+});
+
+test('readonly editors never dispatch input', async ({ page }) => {
+  await gotoHost(page);
+  await editor(page, 'readonly').locator('p').first().click();
+  await page.keyboard.type('nope');
+  await page.waitForTimeout(300);
+  expect((await inputs(page)).filter((id) => id === 'readonly')).toEqual([]);
 });
 
 test('save is debounced ~1500 ms and carries the textarea JSON', async ({ page }) => {

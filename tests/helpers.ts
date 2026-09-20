@@ -22,6 +22,11 @@ export function saves(page: Page): Promise<SaveRecord[]> {
   return page.evaluate(() => window.__saves ?? []);
 }
 
+/** Ids of text-editor elements that dispatched a bubbling `input` event. */
+export function inputs(page: Page): Promise<string[]> {
+  return page.evaluate(() => window.__inputs ?? []);
+}
+
 /** Place the caret at the very end of the last paragraph and type `text`. */
 export async function typeAtEnd(page: Page, text: string, id = 'editable') {
   const ed = editor(page, id);
@@ -48,6 +53,7 @@ export async function typeAtEnd(page: Page, text: string, id = 'editable') {
 declare global {
   interface Window {
     __saves: SaveRecord[];
+    __inputs: string[];
     __formSubmissions: Record<string, string>[];
   }
 }

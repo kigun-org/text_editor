@@ -37,10 +37,15 @@ pnpm test   # Playwright against the Vite demo (Chromium)
     only; same-browser tabs sync over BroadcastChannel).
   - `update-url` — ignored by the widget; the host reads it to know where to
     POST.
-- **Events:** `save` — bubbling `CustomEvent`, `detail` is the notes JSON
-  string, dispatched 1500 ms after the last edit. Not emitted while `readonly`
-  and **not emitted on disconnect**: the textarea is the flush, and a
-  disconnect flush would double-submit next to a form POST.
+- **Events**
+  - `input` — bubbling, no payload, on every edit. Lets the host show a
+    "stale" state (Portfolio: `border-warning`) right away.
+  - `save` — bubbling `CustomEvent`, `detail` is the notes JSON string,
+    dispatched 1500 ms after the last edit.
+
+  Neither fires while `readonly`, and `save` is **not emitted on disconnect**:
+  the textarea is the flush, and a disconnect flush would double-submit next
+  to a form POST.
 - **Methods:** `.document`, `undo()`, `redo()`, `canUndo()`, `canRedo()`.
 - **Network:** none. The widget never POSTs notes; `gallery-url` is the only
   fetch, and only when the gallery tab is opened.
@@ -67,7 +72,7 @@ cycles through those in order; unknown characters read as `0`.
 | File | Covers |
 |------|--------|
 | `tests/contract.spec.ts` | Tag defined, no shadow root, textarea mount, invalid / empty child, readonly (static and runtime), no widget writes |
-| `tests/save.spec.ts` | Immediate textarea sync, 1500 ms debounce, one save per burst, event shape |
+| `tests/save.spec.ts` | Immediate textarea sync and `input` event, 1500 ms debounce, one save per burst, event shape, readonly silence |
 | `tests/teardown.spec.ts` | No save on disconnect, textarea kept, re-append, wrapping form submits the latest notes |
 | `tests/dental.spec.ts` | ODTP template, tooth cycle and storage, readonly chart |
 | `tests/collab.spec.ts` | Room connect, two-tab sync |

@@ -374,6 +374,9 @@ export default class TextEditorElement extends HTMLElement {
       }
       if (!this.editable) return;
       this.dirty = true;
+      // Immediate, payload-less signal for hosts that show a "stale" state
+      // (border-warning) before the debounced `save` arrives.
+      this.dispatchEvent(new Event('input', { bubbles: true }));
       this.scheduleSave();
     };
   }

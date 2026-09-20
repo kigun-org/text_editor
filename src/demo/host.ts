@@ -6,12 +6,19 @@ import basicTemplate from "../data/basic.json";
 declare global {
   interface Window {
     __saves: { id: string; detail: string; bubbles: boolean }[];
+    __inputs: string[];
     __formSubmissions: Record<string, string>[];
   }
 }
 
 window.__saves = [];
+window.__inputs = [];
 window.__formSubmissions = [];
+
+document.addEventListener("input", (event) => {
+  const target = event.target as HTMLElement | null;
+  if (target?.localName === "text-editor") window.__inputs.push(target.id);
+});
 
 const notes = JSON.stringify(basicTemplate);
 document
