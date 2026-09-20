@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { editor, gotoHost, saves, typeAtEnd } from './helpers';
+import { editor, gotoHost, inputs, typeAtEnd } from './helpers';
 
 test('importing the bundle defines text-editor without a shadow root', async ({ page }) => {
   await gotoHost(page);
@@ -34,7 +34,7 @@ test('invalid JSON and a missing child mount an empty paragraph without errors',
   expect(errors.filter((e) => !/favicon/i.test(e))).toEqual([]);
 });
 
-test('readonly host is not editable and never emits save', async ({ page }) => {
+test('readonly host is not editable and never emits input', async ({ page }) => {
   await gotoHost(page);
   const ed = editor(page, 'readonly');
   await expect(ed).toHaveAttribute('contenteditable', 'false');
@@ -43,8 +43,8 @@ test('readonly host is not editable and never emits save', async ({ page }) => {
   await ed.locator('p').first().click();
   await page.keyboard.type('nope');
   await expect(ed).not.toContainText('nope');
-  await page.waitForTimeout(2000);
-  expect((await saves(page)).filter((s) => s.id === 'readonly')).toEqual([]);
+  await page.waitForTimeout(500);
+  expect(await inputs(page, 'readonly')).toEqual([]);
 });
 
 test('adding readonly at runtime switches to read-only and removing it re-enables', async ({ page }) => {
@@ -60,16 +60,4 @@ test('adding readonly at runtime switches to read-only and removing it re-enable
   await page.evaluate(() => document.getElementById('editable')!.removeAttribute('readonly'));
   await expect(ed).toHaveAttribute('contenteditable', 'true');
   await typeAtEnd(page, ' back to editing');
-});
-
-test('the widget itself performs no HTTP writes', async ({ page }) => {
-  const writes: string[] = [];
-  page.on('request', (r) => {
-    if (r.method() !== 'GET') writes.push(`${r.method()} ${r.url()}`);
-  });
-  await gotoHost(page);
-  await typeAtEnd(page, ' no network');
-  await page.waitForTimeout(2200);
-  expect(writes).toEqual([]);
-  expect((await saves(page)).length).toBeGreaterThan(0);
 });

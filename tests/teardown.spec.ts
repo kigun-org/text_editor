@@ -1,28 +1,20 @@
 import { expect, test } from '@playwright/test';
-import { editor, gotoHost, saves, textarea, typeAtEnd } from './helpers';
+import { editor, gotoHost, inputs, textarea, typeAtEnd } from './helpers';
 
-test('removing the element cancels the pending save and keeps the textarea current', async ({ page }) => {
+test('removing the element keeps the textarea current and emits nothing afterwards', async ({ page }) => {
   await gotoHost(page);
-  await page.evaluate(() => {
-    (window as unknown as { __onElement: number }).__onElement = 0;
-    document.getElementById('editable')!.addEventListener('save', () => {
-      (window as unknown as { __onElement: number }).__onElement += 1;
-    });
-  });
-
   await typeAtEnd(page, ' unsaved edit');
   await expect(textarea(page)).toHaveValue(/unsaved edit/);
+  const before = (await inputs(page)).length;
 
-  // Detach well inside the 1500 ms debounce window.
   await page.evaluate(() => {
     const el = document.getElementById('editable')!;
     (window as unknown as { __detached: HTMLElement }).__detached = el;
     el.remove();
   });
 
-  await page.waitForTimeout(2500);
-  expect(await saves(page)).toEqual([]);
-  expect(await page.evaluate(() => (window as unknown as { __onElement: number }).__onElement)).toBe(0);
+  await page.waitForTimeout(500);
+  expect((await inputs(page)).length).toBe(before);
 
   const detached = await page.evaluate(() => {
     const el = (window as unknown as { __detached: HTMLElement }).__detached;
@@ -68,6 +60,6 @@ test('removing a clean or readonly editor emits nothing', async ({ page }) => {
     document.getElementById('readonly')!.remove();
     document.getElementById('invalid')!.remove();
   });
-  await page.waitForTimeout(500);
-  expect(await saves(page)).toEqual([]);
+  await page.waitForTimeout(300);
+  expect(await inputs(page)).toEqual([]);
 });

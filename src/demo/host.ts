@@ -1,24 +1,19 @@
 // Plain-HTML fixture host (no React around the tag). Mirrors how Django renders
-// <text-editor> with a child textarea. Used by tests/contract, save, teardown.
+// <text-editor> with a child textarea. Used by tests/contract, input, teardown.
 import "./app.css";
 import basicTemplate from "../data/basic.json";
 
+export type InputRecord = { id: string; notes: string; bubbles: boolean };
+
 declare global {
   interface Window {
-    __saves: { id: string; detail: string; bubbles: boolean }[];
-    __inputs: string[];
+    __inputs: InputRecord[];
     __formSubmissions: Record<string, string>[];
   }
 }
 
-window.__saves = [];
 window.__inputs = [];
 window.__formSubmissions = [];
-
-document.addEventListener("input", (event) => {
-  const target = event.target as HTMLElement | null;
-  if (target?.localName === "text-editor") window.__inputs.push(target.id);
-});
 
 const notes = JSON.stringify(basicTemplate);
 document
@@ -27,14 +22,15 @@ document
     textarea.value = notes;
   });
 
-const log = document.getElementById("saves");
-document.addEventListener("save", (event) => {
+const log = document.getElementById("inputs");
+document.addEventListener("input", (event) => {
   const target = event.target as HTMLElement | null;
   if (target?.localName !== "text-editor") return;
-  const detail = (event as CustomEvent<string>).detail;
-  window.__saves.push({ id: target.id, detail, bubbles: event.bubbles });
+  const value =
+    target.querySelector<HTMLTextAreaElement>(":scope > textarea")?.value ?? "";
+  window.__inputs.push({ id: target.id, notes: value, bubbles: event.bubbles });
   const li = document.createElement("li");
-  li.textContent = `${target.id}: ${detail.length} chars`;
+  li.textContent = `${target.id}: ${value.length} chars`;
   log?.appendChild(li);
 });
 

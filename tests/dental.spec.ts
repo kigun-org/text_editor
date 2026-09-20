@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { editor, gotoHost, saves } from './helpers';
+import { editor, gotoHost, inputs, textarea } from './helpers';
 
 const room = () => `dental-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
@@ -58,9 +58,11 @@ test('tooth states are stored as one digit per tooth in props.teeth', async ({ p
   await cells.nth(8).click(); // 21 -> missing
   await cells.nth(8).click(); // 21 -> warning
 
-  await expect.poll(async () => (await saves(page)).length, { timeout: 3000 }).toBe(1);
-  const [save] = await saves(page);
-  const chart = JSON.parse(save.detail).find((b: { type: string }) => b.type === 'toothChart');
+  // Three clicks, three input events; the textarea holds the final chart.
+  await expect.poll(async () => (await inputs(page, 'editable')).length).toBe(3);
+  const chart = JSON.parse(await textarea(page).inputValue()).find(
+    (b: { type: string }) => b.type === 'toothChart',
+  );
   expect(chart.props.teeth).toBe('10200000200000000000000000000300');
   expect(chart.props.teeth).toHaveLength(32);
   expect(chart.content).toBeUndefined();
@@ -74,5 +76,5 @@ test('readonly tooth chart ignores clicks', async ({ page }) => {
   await tooth.click();
   await page.waitForTimeout(300);
   await expect(tooth).toHaveAttribute('data-state', '0');
-  expect((await saves(page)).filter((s) => s.id === 'readonly')).toEqual([]);
+  expect(await inputs(page, 'readonly')).toEqual([]);
 });

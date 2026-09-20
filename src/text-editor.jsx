@@ -33,7 +33,6 @@ import '@blocknote/mantine/style.css';
 import './overrides.css';
 
 const EMPTY_DOCUMENT = [{ type: 'paragraph' }];
-const SAVE_DEBOUNCE_MS = 1500;
 const HIDDEN_SLASH_KEYS = new Set([
   'heading_2',
   'heading_3',
@@ -361,23 +360,19 @@ export default class TextEditorElement extends HTMLElement {
     this.host = null;
     this.themeObserver = null;
     this.theme = currentTheme();
-    this.saveTimeout = undefined;
-    this.dirty = false;
-    this.ignoreSave = false;
+    this.ignoreInput = false;
     this.handleChange = (blocks) => {
       const notes = JSON.stringify(blocks);
       const input = this.inputElement;
       if (input) input.value = notes;
-      if (this.ignoreSave) {
-        this.ignoreSave = false;
+      if (this.ignoreInput) {
+        this.ignoreInput = false;
         return;
       }
       if (!this.editable) return;
-      this.dirty = true;
-      // Immediate, payload-less signal for hosts that show a "stale" state
-      // (border-warning) before the debounced `save` arrives.
+      // The widget never persists. It syncs the child textarea and reports the
+      // edit; the host debounces and POSTs (Portfolio: compilers.js, like HugeRTE).
       this.dispatchEvent(new Event('input', { bubbles: true }));
-      this.scheduleSave();
     };
   }
 
@@ -387,9 +382,8 @@ export default class TextEditorElement extends HTMLElement {
   }
 
   disconnectedCallback() {
-    // No `save` on disconnect. The child textarea always holds the latest
-    // document, so the enclosing form (or the host) persists it; emitting here
-    // would double-submit next to a form POST. Same rule as the HugeRTE host.
+    // Nothing to flush: the child textarea already holds the latest document,
+    // so the enclosing form (or the host) persists it.
     this.teardown();
   }
 
@@ -451,7 +445,7 @@ export default class TextEditorElement extends HTMLElement {
   }
 
   remount() {
-    this.ignoreSave = true;
+    this.ignoreInput = true;
     const blocks = this.editorRef.current?.document;
     if (blocks && this.inputElement) {
       this.inputElement.value = JSON.stringify(blocks);
@@ -503,27 +497,7 @@ export default class TextEditorElement extends HTMLElement {
     return this.roomId ? canYRedo(editor) : true;
   }
 
-  scheduleSave() {
-    clearTimeout(this.saveTimeout);
-    this.saveTimeout = setTimeout(() => {
-      this.saveTimeout = undefined;
-      this.emitSave();
-    }, SAVE_DEBOUNCE_MS);
-  }
-
-  emitSave() {
-    if (!this.dirty || !this.editable) return;
-    this.dirty = false;
-    const notes =
-      this.inputElement?.value ||
-      JSON.stringify(this.document ?? EMPTY_DOCUMENT);
-    this.dispatchEvent(new CustomEvent('save', { bubbles: true, detail: notes }));
-  }
-
   teardown() {
-    clearTimeout(this.saveTimeout);
-    this.saveTimeout = undefined;
-    this.dirty = false;
     this.themeObserver?.disconnect();
     this.themeObserver = null;
     this.root?.unmount();

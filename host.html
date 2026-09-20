@@ -16,7 +16,8 @@
       <p class="toolbar__hint">
         Plain-HTML hosts, the way Django renders them. No React around the tag;
         the document lives in the child <code>textarea</code>. Bubbling
-        <code>save</code> events are logged below.
+        <code>input</code> events are logged below; the host decides when to
+        persist the textarea.
       </p>
 
       <h2>Editable</h2>
@@ -40,9 +41,9 @@
       <h2>No child</h2>
       <text-editor id="empty" class="editor-shell"></text-editor>
 
-      <section class="code-panel" aria-label="Save events">
-        <header class="code-panel__header"><span>save events</span></header>
-        <ol id="saves" class="code-panel__body"></ol>
+      <section class="code-panel" aria-label="Input events">
+        <header class="code-panel__header"><span>input events</span></header>
+        <ol id="inputs" class="code-panel__body"></ol>
       </section>
     </main>
     <script type="module" src="/src/demo/host.ts"></script>

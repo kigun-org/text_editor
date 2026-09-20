@@ -1,6 +1,6 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 
-export type SaveRecord = { id: string; detail: string; bubbles: boolean };
+export type InputRecord = { id: string; notes: string; bubbles: boolean };
 
 export async function gotoHost(page: Page) {
   await page.goto('/host.html');
@@ -18,13 +18,12 @@ export function textarea(page: Page, id = 'editable'): Locator {
   return page.locator(`#${id} > textarea[name="notes"]`);
 }
 
-export function saves(page: Page): Promise<SaveRecord[]> {
-  return page.evaluate(() => window.__saves ?? []);
-}
-
-/** Ids of text-editor elements that dispatched a bubbling `input` event. */
-export function inputs(page: Page): Promise<string[]> {
-  return page.evaluate(() => window.__inputs ?? []);
+/** Bubbling `input` events seen at document level, with the textarea value at that moment. */
+export function inputs(page: Page, id?: string): Promise<InputRecord[]> {
+  return page.evaluate(
+    (id) => (window.__inputs ?? []).filter((r) => !id || r.id === id),
+    id,
+  );
 }
 
 /** Place the caret at the very end of the last paragraph and type `text`. */
@@ -52,8 +51,7 @@ export async function typeAtEnd(page: Page, text: string, id = 'editable') {
 
 declare global {
   interface Window {
-    __saves: SaveRecord[];
-    __inputs: string[];
+    __inputs: InputRecord[];
     __formSubmissions: Record<string, string>[];
   }
 }

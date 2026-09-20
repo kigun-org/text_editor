@@ -36,7 +36,6 @@ const EditorHost = memo(function EditorHost({
     <text-editor
       ref={editorRef}
       className="editor-shell"
-      update-url="/demo-save"
       gallery-url={galleryUrl}
       data-room-id={roomId}
       data-user-id={userId}
@@ -78,10 +77,10 @@ export function App({
       setDocument(editor.document ?? null);
       setHistoryTick((tick) => tick + 1);
     };
-    editor.addEventListener("save", sync);
+    editor.addEventListener("input", sync);
     const ready = window.setTimeout(sync, 100);
     return () => {
-      editor.removeEventListener("save", sync);
+      editor.removeEventListener("input", sync);
       window.clearTimeout(ready);
     };
   }, [roomId, user]);

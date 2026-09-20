@@ -15,15 +15,14 @@ test('defines a text-editor custom element without a shadow root', async ({
   expect(await host.evaluate((el) => el.shadowRoot)).toBeNull();
 });
 
-test('mounts BlockNote and emits a bubbling save event', async ({ page }) => {
+test('mounts BlockNote and emits bubbling input events with the textarea in sync', async ({ page }) => {
   await page.addInitScript(() => {
     const saves: string[] = [];
     Object.defineProperty(window, '__saves', { value: saves, writable: true });
-    document.addEventListener('save', (event) => {
-      if ((event.target as HTMLElement | null)?.localName !== 'text-editor') {
-        return;
-      }
-      saves.push((event as CustomEvent<string>).detail);
+    document.addEventListener('input', (event) => {
+      const target = event.target as HTMLElement | null;
+      if (target?.localName !== 'text-editor') return;
+      saves.push(target.querySelector('textarea')?.value ?? '');
     });
   });
 
