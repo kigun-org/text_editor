@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Host fixture — Text Editor</title>
+  </head>
+  <body>
+    <main class="app">
+      <nav class="nav" aria-label="Pages">
+        <a class="nav__link" href="/">Editor</a>
+        <a class="nav__link" href="/dental.html">Dental</a>
+        <a class="nav__link nav__link--active" href="/host.html">Host fixture</a>
+      </nav>
+
+      <p class="toolbar__hint">
+        Plain-HTML hosts, the way Django renders them. No React around the tag;
+        the document lives in the child <code>textarea</code>. Bubbling
+        <code>save</code> events are logged below.
+      </p>
+
+      <h2>Editable</h2>
+      <form id="form">
+        <text-editor id="editable" class="editor-shell" gallery-url="/42/images">
+          <textarea name="notes" id="editable-notes"></textarea>
+        </text-editor>
+        <button type="submit">Submit form</button>
+      </form>
+
+      <h2>Readonly</h2>
+      <text-editor id="readonly" class="editor-shell" readonly>
+        <textarea name="notes"></textarea>
+      </text-editor>
+
+      <h2>Invalid JSON</h2>
+      <text-editor id="invalid" class="editor-shell">
+        <textarea name="notes">not-json</textarea>
+      </text-editor>
+
+      <h2>No child</h2>
+      <text-editor id="empty" class="editor-shell"></text-editor>
+
+      <section class="code-panel" aria-label="Save events">
+        <header class="code-panel__header"><span>save events</span></header>
+        <ol id="saves" class="code-panel__body"></ol>
+      </section>
+    </main>
+    <script type="module" src="/src/demo/host.ts"></script>
+  </body>
+</html>

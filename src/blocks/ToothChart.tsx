@@ -73,20 +73,24 @@ const QUADRANTS = [
   ],
 ] as const;
 
+/**
+ * One character per tooth in `props.teeth` (32 chars, order matches QUADRANTS):
+ * 0 = default, 1 = missing, 2 = warning, 3 = danger. Clicking cycles in that order.
+ */
 type ToothState = "0" | "1" | "2" | "3";
 
 const NEXT_STATE: Record<ToothState, ToothState> = {
-  "0": "3",
-  "3": "1",
+  "0": "1",
   "1": "2",
-  "2": "0",
+  "2": "3",
+  "3": "0",
 };
 
 const STATE_LABEL: Record<ToothState, string> = {
   "0": "empty",
-  "1": "warning",
-  "2": "danger",
-  "3": "missing",
+  "1": "missing",
+  "2": "warning",
+  "3": "danger",
 };
 
 function normalizeTeeth(value: string): string {
@@ -146,11 +150,11 @@ function ToothChartView(
           {quadrant.map((tooth, toothIndex) => {
             const index = quadrantIndex * 8 + toothIndex;
             const state = toothStateAt(teeth, index);
-            const missing = state === "3";
+            const missing = state === "1";
             const className = [
               "tooth-chart__cell",
-              state === "1" ? "tooth-chart__cell--warning" : "",
-              state === "2" ? "tooth-chart__cell--danger" : "",
+              state === "2" ? "tooth-chart__cell--warning" : "",
+              state === "3" ? "tooth-chart__cell--danger" : "",
               missing ? "tooth-chart__cell--missing" : "",
             ]
               .filter(Boolean)

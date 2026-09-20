@@ -384,11 +384,15 @@ export default class TextEditorElement extends HTMLElement {
   }
 
   disconnectedCallback() {
-    this.teardown({ emitSave: this.isConnected });
+    // No `save` on disconnect. The child textarea always holds the latest
+    // document, so the enclosing form (or the host) persists it; emitting here
+    // would double-submit next to a form POST. Same rule as the HugeRTE host.
+    this.teardown();
   }
 
   attributeChangedCallback(_name, oldValue, newValue) {
-    if (!this.root || oldValue == null || oldValue === newValue) return;
+    // Before connect the root is null and mount() reads the attributes itself.
+    if (!this.root || oldValue === newValue) return;
     this.remount();
   }
 
@@ -513,10 +517,10 @@ export default class TextEditorElement extends HTMLElement {
     this.dispatchEvent(new CustomEvent('save', { bubbles: true, detail: notes }));
   }
 
-  teardown({ emitSave }) {
+  teardown() {
     clearTimeout(this.saveTimeout);
     this.saveTimeout = undefined;
-    if (emitSave && this.dirty && this.editable) this.emitSave();
+    this.dirty = false;
     this.themeObserver?.disconnect();
     this.themeObserver = null;
     this.root?.unmount();

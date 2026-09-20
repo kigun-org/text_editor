@@ -15,6 +15,7 @@ export default defineConfig({
       input: {
         main: resolve(import.meta.dirname, 'index.html'),
         dental: resolve(import.meta.dirname, 'dental.html'),
+        host: resolve(import.meta.dirname, 'host.html'),
       },
     },
   },
