@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "BlockNote text editor. Built files are written to dist/.",
   "type": "module",
-  "packageManager": "pnpm@12.4.1",
+  "packageManager": "pnpm@12.5.1",
   "engines": {
     "node": ">=22"
   },
@@ -29,8 +29,8 @@
     "@blocknote/core": "^0.54.2",
     "@blocknote/mantine": "^0.54.2",
     "@blocknote/react": "^0.54.2",
-    "@mantine/core": "^9.6.1",
-    "@mantine/hooks": "^9.6.1",
+    "@mantine/core": "^9.6.2",
+    "@mantine/hooks": "^9.6.2",
     "@mantine/utils": "^6.0.22",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
