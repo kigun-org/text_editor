@@ -3,6 +3,7 @@ import {
   type ReactCustomBlockRenderProps,
 } from "@blocknote/react";
 import "./toothChart.css";
+import { TOOTH_COUNT, toothChartConfig } from "./toothChartConfig";
 
 export function ToothIcon({ size = 18 }: { size?: number }) {
   return (
@@ -22,8 +23,7 @@ export function ToothIcon({ size = 18 }: { size?: number }) {
   );
 }
 
-export const TOOTH_COUNT = 32;
-export const EMPTY_TEETH = "0".repeat(TOOTH_COUNT);
+export { EMPTY_TEETH, TOOTH_COUNT } from "./toothChartConfig";
 
 /** Clinician view, FDI permanent dentition. Storage order matches visual order. */
 const QUADRANTS = [
@@ -106,16 +106,6 @@ function toothStateAt(teeth: string, index: number): ToothState {
   const char = teeth[index];
   return char === "1" || char === "2" || char === "3" ? char : "0";
 }
-
-const toothChartConfig = {
-  type: "toothChart" as const,
-  propSchema: {
-    teeth: {
-      default: EMPTY_TEETH,
-    },
-  },
-  content: "none" as const,
-};
 
 function ToothChartView(
   props: ReactCustomBlockRenderProps<typeof toothChartConfig>,

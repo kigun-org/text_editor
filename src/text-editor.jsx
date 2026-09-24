@@ -21,6 +21,7 @@ import { GalleryUrlContext } from './blocks/GalleryTab';
 import { insertToothChartItem, schema } from './blocks/schema';
 import { DEFAULT_USER, resolveUser } from './collab/users';
 import { useCollabSession } from './collab/useCollabSession';
+import { useHocuspocusSession } from './collab/useHocuspocusSession';
 import {
   canYRedo,
   canYUndo,
@@ -236,6 +237,7 @@ function CollabEditorReady({
   provider,
   user,
   initialBlocks,
+  seed = true,
   theme,
   editable,
   editorRef,
@@ -261,6 +263,7 @@ function CollabEditorReady({
 
   useEffect(() => {
     ensureYUndoListening(editor);
+    if (!seed) return;
     const [first, ...rest] = editor.document;
     const isEmptyPlaceholder =
       rest.length === 0 &&
@@ -270,7 +273,7 @@ function CollabEditorReady({
       editor.replaceBlocks(editor.document, initialBlocks);
       clearYUndoStack(editor);
     }
-  }, [editor, initialBlocks]);
+  }, [editor, initialBlocks, seed]);
 
   useEditorLifecycle(editor, editorRef, onChange, onReady);
   return <EditorView editor={editor} theme={theme} editable={editable} />;
@@ -305,6 +308,57 @@ function CollabProseEditor({
   );
 }
 
+const HOCUSPOCUS_MESSAGES = {
+  reloading: 'The notes changed. Reloading…',
+  denied: 'Live editing is not available.',
+};
+
+function HocuspocusProseEditor({
+  roomId,
+  realtime,
+  user,
+  initialBlocks,
+  theme,
+  editable,
+  editorRef,
+  onChange,
+  onReady,
+}) {
+  const state = useHocuspocusSession(roomId, realtime);
+  if (state.status === 'ready') {
+    return (
+      <CollabEditorReady
+        doc={state.session.doc}
+        provider={state.session.provider}
+        user={user}
+        initialBlocks={initialBlocks}
+        seed={false}
+        theme={theme}
+        editable={editable}
+        editorRef={editorRef}
+        onChange={onChange}
+        onReady={onReady}
+      />
+    );
+  }
+  // Until the room syncs, show the stored notes read-only.
+  const message = HOCUSPOCUS_MESSAGES[state.status];
+  return (
+    <>
+      {message && editable ? (
+        <div className="editor-connecting">{message}</div>
+      ) : null}
+      <LocalProseEditor
+        key={state.status}
+        initialBlocks={initialBlocks}
+        theme={theme}
+        editable={false}
+        editorRef={editorRef}
+      />
+    </>
+  );
+}
+
 function ProseEditor({
   initialBlocks,
   theme,
@@ -313,10 +367,23 @@ function ProseEditor({
   onChange,
   onReady,
   roomId,
+  realtime,
   user,
   galleryUrl,
 }) {
-  const editor = roomId ? (
+  const editor = roomId && realtime ? (
+    <HocuspocusProseEditor
+      roomId={roomId}
+      realtime={realtime}
+      user={user}
+      initialBlocks={initialBlocks}
+      theme={theme}
+      editable={editable}
+      editorRef={editorRef}
+      onChange={onChange}
+      onReady={onReady}
+    />
+  ) : roomId ? (
     <CollabProseEditor
       roomId={roomId}
       user={user}
@@ -351,6 +418,10 @@ export default class TextEditorElement extends HTMLElement {
     'gallery-url',
     'data-room-id',
     'data-user-id',
+    'data-user-name',
+    'data-user-color',
+    'realtime-url',
+    'token-url',
   ];
 
   constructor() {
@@ -409,7 +480,21 @@ export default class TextEditorElement extends HTMLElement {
     return this.getAttribute('data-room-id') || '';
   }
 
+  get realtime() {
+    const url = this.getAttribute('realtime-url');
+    const tokenUrl = this.getAttribute('token-url');
+    return url && tokenUrl ? { url, tokenUrl } : null;
+  }
+
   get user() {
+    const name = this.getAttribute('data-user-name');
+    if (name) {
+      return {
+        id: this.getAttribute('data-user-id') || name,
+        username: name,
+        color: this.getAttribute('data-user-color') || DEFAULT_USER.color,
+      };
+    }
     return resolveUser(this.getAttribute('data-user-id') || undefined);
   }
 
@@ -438,6 +523,7 @@ export default class TextEditorElement extends HTMLElement {
         editorRef={this.editorRef}
         onChange={this.handleChange}
         roomId={this.roomId}
+        realtime={this.realtime}
         user={this.user || DEFAULT_USER}
         galleryUrl={this.galleryUrl}
       />,

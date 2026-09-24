@@ -1,0 +1,122 @@
+import { useEffect, useState } from "react";
+import * as Y from "yjs";
+import {
+  HocuspocusProvider,
+  HocuspocusProviderWebsocket,
+} from "@hocuspocus/provider";
+
+export type RealtimeConfig = {
+  url: string;
+  tokenUrl: string;
+};
+
+export type HocuspocusSession = {
+  doc: Y.Doc;
+  provider: HocuspocusProvider;
+};
+
+export type HocuspocusState =
+  | { status: "connecting" }
+  | { status: "reloading" }
+  | { status: "denied" }
+  | { status: "ready"; session: HocuspocusSession };
+
+// The server refuses a known generation after it discarded or reset the room
+// document. The client then starts over with an empty Y.Doc, so stale Yjs
+// updates never merge into the new document.
+const RELOAD_REASONS = new Set(["stale-generation", "resetting"]);
+const RELOAD_DELAY_MS = 500;
+
+// One WebSocket per server URL. All editors on the page attach to it.
+const sockets = new Map<string, HocuspocusProviderWebsocket>();
+
+function socketUrl(value: string) {
+  if (/^wss?:\/\//.test(value)) return value;
+  const url = new URL(value, window.location.href);
+  url.protocol = url.protocol === "https:" ? "wss:" : "ws:";
+  return url.href;
+}
+
+function socketFor(value: string) {
+  const url = socketUrl(value);
+  let socket = sockets.get(url);
+  if (!socket) {
+    socket = new HocuspocusProviderWebsocket({ url });
+    sockets.set(url, socket);
+  }
+  return socket;
+}
+
+async function fetchToken(tokenUrl: string) {
+  const response = await fetch(new URL(tokenUrl, window.location.href), {
+    credentials: "same-origin",
+    headers: { Accept: "application/json" },
+  });
+  if (!response.ok) {
+    throw new Error(`Realtime token: HTTP ${response.status}`);
+  }
+  return (await response.json()).token as string;
+}
+
+/**
+ * Connect a Y.Doc to a notes room on the Hocuspocus server. The server loads
+ * the notes from Django and stores them, so the client never seeds the
+ * document and never saves over HTTP.
+ */
+export function useHocuspocusSession(
+  roomId: string,
+  config: RealtimeConfig,
+): HocuspocusState {
+  const [state, setState] = useState<HocuspocusState>({ status: "connecting" });
+  const [attempt, setAttempt] = useState(0);
+  const { url, tokenUrl } = config;
+
+  useEffect(() => {
+    const doc = new Y.Doc();
+    let generation = "";
+    let closed = false;
+    let reloadTimer: ReturnType<typeof setTimeout> | undefined;
+
+    setState({ status: "connecting" });
+    const provider = new HocuspocusProvider({
+      websocketProvider: socketFor(url),
+      name: roomId,
+      document: doc,
+      token: async () =>
+        JSON.stringify({ token: await fetchToken(tokenUrl), generation }),
+      onSynced: () => {
+        generation = String(doc.getMap("meta").get("generation") ?? "");
+        if (!closed) {
+          setState((current) =>
+            current.status === "ready"
+              ? current
+              : { status: "ready", session: { doc, provider } },
+          );
+        }
+      },
+      onAuthenticationFailed: ({ reason }) => {
+        if (closed) return;
+        if (RELOAD_REASONS.has(reason)) {
+          closed = true;
+          setState({ status: "reloading" });
+          reloadTimer = setTimeout(
+            () => setAttempt((value) => value + 1),
+            RELOAD_DELAY_MS,
+          );
+        } else {
+          setState({ status: "denied" });
+        }
+      },
+    });
+    provider.attach();
+
+    return () => {
+      closed = true;
+      clearTimeout(reloadTimer);
+      provider.destroy();
+      doc.destroy();
+    };
+  }, [roomId, url, tokenUrl, attempt]);
+
+  return state;
+}
