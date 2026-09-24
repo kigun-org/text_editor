@@ -371,7 +371,9 @@ function ProseEditor({
   user,
   galleryUrl,
 }) {
-  const editor = roomId && realtime ? (
+  // Read-only hosts only show the stored notes. They must not join a room:
+  // no cursors, no token fetch, no notes: channel.
+  const editor = editable && roomId && realtime ? (
     <HocuspocusProseEditor
       roomId={roomId}
       realtime={realtime}
@@ -383,7 +385,7 @@ function ProseEditor({
       onChange={onChange}
       onReady={onReady}
     />
-  ) : roomId ? (
+  ) : editable && roomId ? (
     <CollabProseEditor
       roomId={roomId}
       user={user}
@@ -562,25 +564,25 @@ export default class TextEditorElement extends HTMLElement {
   undo() {
     const editor = this.editorRef.current;
     if (!editor) return false;
-    return this.roomId ? yUndo(editor) : editor.undo();
+    return this.editable && this.roomId ? yUndo(editor) : editor.undo();
   }
 
   redo() {
     const editor = this.editorRef.current;
     if (!editor) return false;
-    return this.roomId ? yRedo(editor) : editor.redo();
+    return this.editable && this.roomId ? yRedo(editor) : editor.redo();
   }
 
   canUndo() {
     const editor = this.editorRef.current;
     if (!editor) return false;
-    return this.roomId ? canYUndo(editor) : true;
+    return this.editable && this.roomId ? canYUndo(editor) : true;
   }
 
   canRedo() {
     const editor = this.editorRef.current;
     if (!editor) return false;
-    return this.roomId ? canYRedo(editor) : true;
+    return this.editable && this.roomId ? canYRedo(editor) : true;
   }
 
   teardown() {
