@@ -479,10 +479,13 @@ export default class TextEditorElement extends HTMLElement {
   }
 
   get roomId() {
+    // Read-only hosts never join a room, even if the markup still carries ids.
+    if (!this.editable) return '';
     return this.getAttribute('data-room-id') || '';
   }
 
   get realtime() {
+    if (!this.editable) return null;
     const url = this.getAttribute('realtime-url');
     const tokenUrl = this.getAttribute('token-url');
     return url && tokenUrl ? { url, tokenUrl } : null;
