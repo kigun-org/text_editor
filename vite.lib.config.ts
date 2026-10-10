@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => ({
   plugins: [react()],
   define: {
     'process.env.NODE_ENV': JSON.stringify(
-      mode === 'production' ? 'production' : 'development',
+      mode === 'production' || mode === 'portfolio' ? 'production' : 'development',
     ),
     global: 'globalThis',
   },
@@ -15,7 +15,9 @@ export default defineConfig(({ mode }) => ({
     cssCodeSplit: false,
     assetsInlineLimit: 1024 * 1024,
     rolldownOptions: {
+      external: mode === 'portfolio' ? ['yjs'] : [],
       output: {
+        paths: { yjs: '../../shared/yjs.js' },
         codeSplitting: false,
       },
     },
