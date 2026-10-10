@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from 'react';
+import { useMemo, useEffect, useCallback } from 'react';
 import { filterSuggestionItems } from '@blocknote/core';
 import { withCollaboration } from '@blocknote/core/yjs';
 import {
@@ -325,6 +325,10 @@ function HocuspocusProseEditor({
   onReady,
 }) {
   const state = useHocuspocusSession(roomId, realtime);
+  const handleChange = useCallback(
+    (blocks) => onChange?.(blocks, editable && state.writable),
+    [onChange, editable, state.writable],
+  );
   if (state.status === 'ready') {
     return (
       <CollabEditorReady
@@ -334,9 +338,9 @@ function HocuspocusProseEditor({
         initialBlocks={initialBlocks}
         seed={false}
         theme={theme}
-        editable={editable}
+        editable={editable && state.writable}
         editorRef={editorRef}
-        onChange={onChange}
+        onChange={handleChange}
         onReady={onReady}
       />
     );
@@ -371,9 +375,8 @@ function ProseEditor({
   user,
   galleryUrl,
 }) {
-  // Read-only hosts only show the stored notes. They must not join a room:
-  // no cursors, no token fetch, no notes: channel.
-  const editor = editable && roomId && realtime ? (
+  // Hocuspocus supplies the document for both writers and read-only viewers.
+  const editor = roomId && realtime ? (
     <HocuspocusProseEditor
       roomId={roomId}
       realtime={realtime}
@@ -434,7 +437,7 @@ export default class TextEditorElement extends HTMLElement {
     this.themeObserver = null;
     this.theme = currentTheme();
     this.ignoreInput = false;
-    this.handleChange = (blocks) => {
+    this.handleChange = (blocks, emitInput = true) => {
       const notes = JSON.stringify(blocks);
       const input = this.inputElement;
       if (input) input.value = notes;
@@ -442,7 +445,7 @@ export default class TextEditorElement extends HTMLElement {
         this.ignoreInput = false;
         return;
       }
-      if (!this.editable) return;
+      if (!this.editable || !emitInput) return;
       // The widget never persists. It syncs the child textarea and reports the
       // edit; the host debounces and POSTs (Portfolio: compilers.js, like HugeRTE).
       this.dispatchEvent(new Event('input', { bubbles: true }));
@@ -479,13 +482,10 @@ export default class TextEditorElement extends HTMLElement {
   }
 
   get roomId() {
-    // Read-only hosts never join a room, even if the markup still carries ids.
-    if (!this.editable) return '';
     return this.getAttribute('data-room-id') || '';
   }
 
   get realtime() {
-    if (!this.editable) return null;
     const url = this.getAttribute('realtime-url');
     const tokenUrl = this.getAttribute('token-url');
     return url && tokenUrl ? { url, tokenUrl } : null;

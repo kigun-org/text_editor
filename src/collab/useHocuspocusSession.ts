@@ -19,7 +19,7 @@ export type HocuspocusState =
   | { status: "connecting" }
   | { status: "reloading" }
   | { status: "denied" }
-  | { status: "ready"; session: HocuspocusSession };
+  | { status: "ready"; session: HocuspocusSession; writable: boolean };
 
 // The server refuses a known generation after it discarded or reset the room
 // document. The client then starts over with an empty Y.Doc, so stale Yjs
@@ -74,6 +74,7 @@ export function useHocuspocusSession(
   useEffect(() => {
     const doc = new Y.Doc();
     let generation = "";
+    let writable = true;
     let closed = false;
     let reloadTimer: ReturnType<typeof setTimeout> | undefined;
 
@@ -81,6 +82,8 @@ export function useHocuspocusSession(
     const provider = new HocuspocusProvider({
       websocketProvider: socketFor(url),
       name: roomId,
+      // View replacement can briefly overlap providers for the same room.
+      sessionAwareness: true,
       document: doc,
       token: async () =>
         JSON.stringify({ token: await fetchToken(tokenUrl), generation }),
@@ -90,9 +93,16 @@ export function useHocuspocusSession(
           setState((current) =>
             current.status === "ready"
               ? current
-              : { status: "ready", session: { doc, provider } },
+              : { status: "ready", session: { doc, provider }, writable },
           );
         }
+      },
+      onAuthenticated: ({ scope }) => {
+        writable = scope !== "readonly";
+        if (closed) return;
+        setState((current) =>
+          current.status === "ready" ? { ...current, writable } : current,
+        );
       },
       onAuthenticationFailed: ({ reason }) => {
         if (closed) return;

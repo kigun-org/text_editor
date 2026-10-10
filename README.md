@@ -30,14 +30,16 @@ pnpm test   # Playwright against the Vite demo (Chromium)
   change, so a normal form submit always carries the latest notes. Invalid
   JSON or no child mounts a single empty paragraph.
 - **Attributes**
-  - `readonly` — not editable, no side menu, no `save`, no live room. Reacts
-    when added or removed at runtime. A read-only host only shows the textarea
-    document; it never joins `data-room-id` even if room attributes are set.
+  - `readonly` — not editable, no side menu, and no edit events. Reacts
+    when added or removed at runtime. With Hocuspocus room attributes, a
+    read-only host connects and receives live updates. Otherwise it shows
+    the stored textarea document.
   - `gallery-url` — JSON endpoint (`{ visits: [{ title, images: [{ id, url,
     thumbnail }] }] }`) for the image panel's gallery tab.
   - `data-room-id`, `realtime-url`, `token-url` — optional Hocuspocus live
-    notes (editable hosts only). Without `realtime-url`/`token-url`,
-    `data-room-id` uses y-webrtc (demo only).
+    notes for writable and read-only hosts. A server read-only grant also
+    disables editing. Without `realtime-url`/`token-url`, `data-room-id`
+    uses y-webrtc for editable hosts (demo only).
   - `data-user-id`, `data-user-name`, `data-user-color` — cursor label in a
     live room (host usually copies these from `<meta name="realtime">`).
   - `update-url` — ignored by the widget; the host reads it to know where to
