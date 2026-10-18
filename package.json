@@ -15,7 +15,7 @@
     "check": "tsc --noEmit && tsc -p tsconfig.node.json",
     "test": "playwright test"
   },
-  "license": "MIT",
+  "license": "AGPL-3.0-only",
   "devDependencies": {
     "@playwright/test": "^1.63.0",
     "@types/node": "^22.20.2",

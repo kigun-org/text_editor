@@ -92,3 +92,7 @@ cycles through those in order; unknown characters read as `0`.
 specs; it mirrors how Django renders the tag. The 1500 ms debounce and the
 POST live in Portfolio's `compilers.js` and are covered by its e2e test
 `test_text_editor_autosaves_after_input_debounce`.
+
+## License
+
+Licensed under AGPL-3.0-only. See [LICENSE](LICENSE).
