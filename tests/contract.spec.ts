@@ -47,6 +47,27 @@ test('readonly host is not editable and never emits input', async ({ page }) => 
   expect(await inputs(page, 'readonly')).toEqual([]);
 });
 
+test('readonly hosts do not connect even with realtime attributes', async ({ page }) => {
+  await gotoHost(page);
+  const sockets: string[] = [];
+  const tokens: string[] = [];
+  page.on('websocket', socket => sockets.push(socket.url()));
+  await page.route('**/test-token', route => {
+    tokens.push(route.request().url());
+    return route.fulfill({ json: { token: 'test' } });
+  });
+  await page.evaluate(() => {
+    const host = document.getElementById('readonly')!;
+    host.setAttribute('data-room-id', 'notes:1:1');
+    host.setAttribute('realtime-url', 'ws://localhost:12345');
+    host.setAttribute('token-url', '/test-token');
+  });
+  await expect(editor(page, 'readonly')).toHaveAttribute('contenteditable', 'false');
+  await page.waitForTimeout(500);
+  expect(sockets).toEqual([]);
+  expect(tokens).toEqual([]);
+});
+
 test('adding readonly at runtime switches to read-only and removing it re-enables', async ({ page }) => {
   await gotoHost(page);
   const ed = editor(page);

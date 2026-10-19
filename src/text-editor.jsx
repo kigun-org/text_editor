@@ -375,8 +375,8 @@ function ProseEditor({
   user,
   galleryUrl,
 }) {
-  // Hocuspocus supplies the document for both writers and read-only viewers.
-  const editor = roomId && realtime ? (
+  // Read-only fields display the stored notes without joining a room.
+  const editor = editable && roomId && realtime ? (
     <HocuspocusProseEditor
       roomId={roomId}
       realtime={realtime}
