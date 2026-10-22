@@ -23,11 +23,15 @@ test('two tabs on one room sync typed text (BroadcastChannel, no signaling)', as
   await expect(editorA).toBeVisible();
   await expect(editorB).toBeVisible();
 
+  await a.locator('text-editor').evaluate(el => el.setAttribute('word-limit', '1'));
+  await b.locator('text-editor').evaluate(el => el.setAttribute('word-limit', '1'));
   await editorA.locator('p').last().click();
   await a.keyboard.press('End');
   await a.keyboard.type(' shared across tabs');
   await expect(editorA).toContainText('shared across tabs');
   await expect(editorB).toContainText('shared across tabs', { timeout: 15_000 });
 
+  await expect(b.locator('.editor-word-count-over')).toContainText('words over the limit');
+  await expect(b.locator('.editor-word-count')).toHaveText(await a.locator('.editor-word-count').innerText());
   await context.close();
 });

@@ -1,3 +1,4 @@
+import { countWords } from './wordCount';
 import { useMemo, useEffect, useCallback } from 'react';
 import { filterSuggestionItems } from '@blocknote/core';
 import { withCollaboration } from '@blocknote/core/yjs';
@@ -419,6 +420,7 @@ function ProseEditor({
 
 export default class TextEditorElement extends HTMLElement {
   static observedAttributes = [
+    'word-limit',
     'readonly',
     'gallery-url',
     'data-room-id',
@@ -438,6 +440,7 @@ export default class TextEditorElement extends HTMLElement {
     this.theme = currentTheme();
     this.ignoreInput = false;
     this.handleChange = (blocks, emitInput = true) => {
+      this.updateWordCount(blocks);
       const notes = JSON.stringify(blocks);
       const input = this.inputElement;
       if (input) input.value = notes;
@@ -466,7 +469,31 @@ export default class TextEditorElement extends HTMLElement {
   attributeChangedCallback(_name, oldValue, newValue) {
     // Before connect the root is null and mount() reads the attributes itself.
     if (!this.root || oldValue === newValue) return;
+    if (_name === 'word-limit') {
+      this.updateWordCount(this.editorRef.current?.document || this.parseInitialBlocks());
+      return;
+    }
     this.remount();
+  }
+
+  updateWordCount(blocks) {
+    const raw = this.getAttribute('word-limit') || '';
+    const limit = Number(raw);
+    if (!/^\d+$/.test(raw) || !Number.isSafeInteger(limit) || limit < 1) {
+      this.counter?.remove();
+      this.counter = null;
+      return;
+    }
+    if (!this.counter) {
+      this.counter = document.createElement('div');
+      this.counter.className = 'editor-word-count';
+      this.counter.setAttribute('role', 'status');
+      this.appendChild(this.counter);
+    }
+    const count = countWords(blocks);
+    this.counter.classList.toggle('editor-word-count-over', count > limit);
+    this.counter.textContent = `${count} / ${limit} words` +
+      (count > limit ? ` — ${count - limit} ${count - limit === 1 ? 'word' : 'words'} over the limit` : '');
   }
 
   get inputElement() {
@@ -520,12 +547,14 @@ export default class TextEditorElement extends HTMLElement {
 
   mount() {
     this.root = createRoot(this.ensureHost());
+    this.updateWordCount(this.parseInitialBlocks());
     this.root.render(
       <ProseEditor
         initialBlocks={this.parseInitialBlocks()}
         theme={this.theme}
         editable={this.editable}
         editorRef={this.editorRef}
+        onReady={(editor) => this.updateWordCount(editor.document)}
         onChange={this.handleChange}
         roomId={this.roomId}
         realtime={this.realtime}
@@ -594,6 +623,8 @@ export default class TextEditorElement extends HTMLElement {
     this.root?.unmount();
     this.root = null;
     this.editorRef.current = null;
+    this.counter?.remove();
+    this.counter = null;
     this.host?.remove();
     this.host = null;
   }

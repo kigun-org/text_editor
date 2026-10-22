@@ -91,3 +91,13 @@ text-editor [data-file-block] .bn-visual-media,
 text-editor [data-content-type="image"] img {
   border-radius: 0;
 }
+
+.editor-word-count {
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--bs-secondary-color, #666);
+}
+.editor-word-count-over {
+  color: var(--bs-danger-text-emphasis, #b02a37);
+  font-weight: 600;
+}

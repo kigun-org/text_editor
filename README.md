@@ -96,3 +96,16 @@ POST live in Portfolio's `compilers.js` and are covered by its e2e test
 ## License
 
 Licensed under AGPL-3.0-only. See [LICENSE](LICENSE).
+
+## Word limits
+
+Set `word-limit="200"` to show a word counter and an over-limit warning.
+Omitted, invalid, or non-positive values hide the counter. Changes to this
+attribute update the counter without resetting the editor. Read-only editors
+also show the count. The limit never blocks edits or saves.
+
+The counter uses whitespace-separated tokens containing a Unicode letter or
+number. It includes template text, headings, lists, nested blocks, table cells,
+link labels, and image captions. Formatting does not split words. URLs,
+metadata, and tooth-chart values do not count. Hyphenated words and contractions
+count as one word; punctuation alone does not count.
